@@ -1,0 +1,51 @@
+%---Makra pro zpěvníček-------------------------------
+
+%pro debuging
+\tracingmacros=1
+
+\parindent=0 pt
+
+%čítač slok
+\newcount\verscnt
+
+
+%---Zpěvník------------------------------------------
+%TODO: nastavení tisku - velikost stránky, velikost okrajů, ...
+%TODO: titulek, podtitulek, autor, obrázek
+
+
+%---Píseň--------------------------------------------
+\def\beginsong{\vfil \break \verscnt 1\relax}
+
+\def\title#1{{\bf #1}\par}
+\def\author#1{{\bi #1}\par\medskip}
+
+
+%---Předehra-----------------------------------------
+\def\intro#1\par{{\it Intro: } #1 \medskip}
+
+
+%---Refrén-------------------------------------------
+\def\refrain{{\bf Ref.}\bigskip}
+
+
+%---Sloky--------------------------------------------
+%TODO: Odsazení čísel slok
+{\catcode`\^^M=13
+\gdef\beginverse{\begingroup \catcode`\^^M=13
+\let^^M=\par
+\hbox{\ht0=0pt \kern-2em \the\verscnt )}}}
+\def\endverse{\bigskip\endgroup \advance\verscnt 1\relax}
+
+
+%---Vysázení akordů----------------------------------
+%\def\chord#1{{\it \kern-.75em\lower-1em\hbox{#1}}}
+\def\chord#1{\raise 10pt \hbox to 0pt{\kern-.75em {\it #1} \hss}}
+
+
+%---Repetice-----------------------------------------
+%TODO: Jak s volitelnými parametry?
+%TODO: Nakreslit lepší |: :|
+\def\repete#1#2{{\bi /:#1:/#2x}}
+\def\|:#1:|#2{{\bi /:#1:/\if:#2: {} \else #2x \fi}}
+
