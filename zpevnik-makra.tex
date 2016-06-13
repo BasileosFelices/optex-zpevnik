@@ -1,31 +1,37 @@
 %---Makra pro zpěvníček-------------------------------
 
 %pro debuging
-\tracingmacros=1
 
 \parindent=0 pt
 
 %čítač slok
 \newcount\verscnt
 
+\def\newpage{\vfil \break}
+
 
 %---Zpěvník------------------------------------------
 %TODO: nastavení tisku - velikost stránky, velikost okrajů, ...
-%TODO: titulek, podtitulek, autor, obrázek
+%TODO: titulek, podtitulek, autor, obrázek?
+%TODO: vypnout číslování
 
+\def\booktitle#1\par{{\bf #1}\par\bigskip}
+\def\bookauthor#1\par{{\it #1}\vfil}
 
 %---Píseň--------------------------------------------
-\def\beginsong{\vfil \break \verscnt 1\relax}
+\def\beginsong{\newpage \verscnt 1\relax}
 
 \def\title#1{{\bf #1}\par}
 \def\author#1{{\bi #1}\par\medskip}
 
 
 %---Předehra-----------------------------------------
-\def\intro#1\par{{\it Intro: } #1 \medskip}
+\def\intro#1\par{{\it Intro: } #1 .\medskip}
 
 
 %---Refrén-------------------------------------------
+%TODO: refrén s parametrem/bez parametru
+%TODO: podruhé vložený refrain buď vložit celý, nebo jen první řádek a ...?
 \def\refrain{{\bf Ref.}\bigskip}
 
 
@@ -39,6 +45,8 @@
 
 
 %---Vysázení akordů----------------------------------
+%TODO: doupravit odsazení - zarovnat se začátkem písmene, ke kterému patří?
+%TODO: bug-akord na začátku řádky?
 %\def\chord#1{{\it \kern-.75em\lower-1em\hbox{#1}}}
 \def\chord#1{\raise 10pt \hbox to 0pt{\kern-.75em {\it #1} \hss}}
 
