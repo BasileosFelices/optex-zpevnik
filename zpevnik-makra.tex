@@ -1,13 +1,17 @@
 %---Makra pro zpěvníček-------------------------------
 
-%pro debuging
+%pro debuging	
+\def\boxed#1{\hbox{\vrule\vbox{\hrule\hbox{#1}\hrule}\vrule}}
+
 
 \parindent=0 pt
+
 
 %čítač slok
 \newcount\verscnt
 
 \def\newpage{\vfil \break}
+\def\centerH#1{\hbox to \hsize{\hss #1 \hss}}
 
 
 %---Zpěvník------------------------------------------
@@ -15,8 +19,8 @@
 %TODO: titulek, podtitulek, autor, obrázek?
 %TODO: vypnout číslování
 
-\def\booktitle#1\par{{\bf #1}\par\bigskip}
-\def\bookauthor#1\par{{\it #1}\vfil}
+\def\booktitle#1\par{\vbox to 0.25\vsize{}\centerH{\bf #1}}
+\def\bookauthor#1\par{\centerH{\it #1}}
 
 %---Píseň--------------------------------------------
 \def\beginsong{\newpage \verscnt 1\relax}
@@ -26,7 +30,7 @@
 
 
 %---Předehra-----------------------------------------
-\def\intro#1\par{{\it Intro: } #1 .\medskip}
+\def\intro#1\par{{\it Intro: } #1 \medskip}
 
 
 %---Refrén-------------------------------------------
@@ -55,5 +59,37 @@
 %TODO: Jak s volitelnými parametry?
 %TODO: Nakreslit lepší |: :|
 \def\repete#1#2{{\bi /:#1:/#2x}}
-\def\|:#1:|#2{{\bi /:#1:/\if:#2: {} \else #2x \fi}}
+\def\|:#1:|#2{\hbox{\bi \drawl#1\drawr\if:#2: {} \else #2x \fi}}
+
+
+\def\lrepsign{\pdfliteral{q
+.5 w
+2 10 m
+0 8 l	%horní šikmá čára
+0 2 l 	%kratší vertikální čára
+2 0 l	%dolní šikmá čára
+S
+1 9 m
+1 1 l	%delší přepažující vertikální čára
+S
+2 7 m
+2 6 l	%horní bod
+S
+2 4 m
+2 3 l	%spodní bod
+S
+Q}}
+
+\def\rrepsign{\pdfliteral{q
+-1 0 0 1 0 0 cm		%zrcadlení podle osy x
+\lrepsign
+Q}}
+
+\def\drawl{\hbox to 3pt{\vbox to 10pt{\vss\lrepsign}\hss}}
+\def\drawr{\hbox to 3pt{\hss \vbox to 10pt{\vss\rrepsign}}}
+
+\hbox{\boxed{\drawl}\boxed{text}\boxed{\drawr}}
+
+\setbox0=\hbox{\drawl}
+\message{výška: \the\ht0 hloubka: x šířka: \the\wd0}
 
