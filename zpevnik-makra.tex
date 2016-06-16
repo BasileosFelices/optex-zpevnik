@@ -54,6 +54,7 @@
 \gdef\beginverse{\begingroup \catcode`\^^M=13
 \let^^M=\par
 \the\verscnt)}}
+
 \def\endverse{\bigskip\endgroup \advance\verscnt 1\relax}
 
 
@@ -66,9 +67,10 @@
 
 %---Repetice-----------------------------------------
 %TODO: Jak s volitelnými parametry?
-%TODO: Přidat účaří, zarovnat s textem, zachovat zlom textu!
-\def\repete#1#2{{\bi /:#1:/#2x}}
-\def\|:#1:|#2{{\bi \noindent\drawl#1\drawr\if:#2: {} \else #2x \fi}}
+%TODO: Přidat účaří, zarovnat s textem
+\catcode`\|=13
+%\def\repete#1#2{{\bi /:#1:/#2x}}
+\def|:#1:|#2{\noindent\drawl{\bi #1}\drawr\if:#2: {} \else {\bi \hskip 5pt #2x} \fi}
 
 \def\lrepsign{\pdfliteral{q
 .5 w
