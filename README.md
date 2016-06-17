@@ -42,7 +42,7 @@ Vlastní obsah zpěvníku musí být uvozen makrem \songs. Jednotlivé písničk
 
 Pro vložení obsahu je možné použít makro \readtoc.
 
-Soubor je potřeba ukončit \bye.
+Soubor je potřeba ukončit pomocí \bye.
 
 
 ### Sazba písniček ###
