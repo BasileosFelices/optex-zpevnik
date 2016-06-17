@@ -57,6 +57,15 @@ Každá píseň musí začít voláním makra \beginsong, které následuje vol�
 
 ```
 
+Předehru je možné vložit pomocí \intro <Jména akordů zakončená prázdným řádkem>:
+
+```
+#!tex
+\intro C Dmi F C
+
+```
+
+
 Každá sloka by měla být uvozena makry \beginverse a \endverse.
 
 Akordy lze vkládat pomocí makra \chord{<název akordu>}, které vložíte před znak, nad kterým se má akord objevit. Pokud má akord obsahovat křížek, je nutné ho zapsat tímto způsobem \\#.
