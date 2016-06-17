@@ -51,7 +51,7 @@
 %---Refrén-------------------------------------------
 {\catcode`\^^M=13
 \gdef\beginrefrain{\begingroup \catcode`\^^M=13 \def^^M{\par\nobreak}
-\noindent \bf Ref:\par\smallskip}}
+\noindent \bf Ref:\par\smallskip\nobreak}}
 
 \def\endrefrain{\endgroup\par\bigskip\allowbreak}
 
@@ -62,7 +62,7 @@
 %TODO: Odsazení čísel slok
 {\catcode`\^^M=13
 \gdef\beginverse{\begingroup \catcode`\^^M=13 \def^^M{\par\nobreak}
-\noindent \the\verscnt)\par\smallskip}}
+\noindent \the\verscnt)\par\smallskip\nobreak}}
 
 \def\endverse{\endgroup\par\bigskip\allowbreak \advance\verscnt 1\relax}
 
