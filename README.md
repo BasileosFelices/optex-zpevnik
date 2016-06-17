@@ -1,5 +1,7 @@
 # Makra pro vytvoření zpěvníčku s akordy #
 
+Tato práce vznikla v rámci předmětu BI-TEX na FIT ČVUT. Jejím obsahem jsou makra umožňující vytvoření jednoduchého zpěvníčku z akordy.
+
 ## Obsah repozitáře ##
 
 * zpevnik-makra.tex - soubor s makry
@@ -57,7 +59,7 @@ Každá píseň musí začít voláním makra \beginsong, které následuje vol�
 
 Každá sloka by měla být uvozena makry \beginverse a \endverse.
 
-Akordy lze vkládat pomocí makra \chord{<název akordu>}, které vložíte před znak, nad kterým se má akord objevit.
+Akordy lze vkládat pomocí makra \chord{<název akordu>}, které vložíte před znak, nad kterým se má akord objevit. Pokud má akord obsahovat křížek, je nutné ho zapsat tímto způsobem \\#.
 
 Pokud se v písničce nějaká část sloky opakuje, je možné vložit repetici. K tomu stačí opakující se část vložit mezi znaky |: a :|. Za :| je možné vložit číslo vyjadřující počet opakování, pak by mělo následovat odřádkování.
 
@@ -109,6 +111,11 @@ co je blázen a nemá šajn.:|
 \refrain
 ```
 
+### Vygenerování pdf ###
+Pro vygenerování pdf zpěvníku použijte
 
+```
+#!tex
 
-Tato práce vznikla v rámci předmětu BI-TEX na FIT ČVUT.
+pdfcsplain <nazev>
+```
