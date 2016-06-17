@@ -78,7 +78,7 @@ Pro vložení značky Ref. je možné využít \refrain
 \beginverse
 Moje \chord{Gmi}briga má \chord{F}jméno \chord{Gmi}Ariel,
 řek' kapitán, \chord{F}když mě \chord{Gmi}zval.
-|: \chord{B}Prej abych s ním jako \chord{F}lodník jel
+|:\chord{B}Prej abych s ním jako \chord{F}lodník jel
 a ten \chord{Gmi}džob co mi \chord{F}nabíd', \chord{Gmi}bral.:|
 \endverse
 
