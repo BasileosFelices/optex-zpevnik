@@ -2,11 +2,10 @@
 
 \input cavantga
 
-\font\bigfont=pagk8z at32pt
-\font\smaller=pagk8z at24pt
-
-\font\mya=pagk8z scaled \magstep2
-\font\myb=pagk8z scaled \magstep1
+\font\booktitf=pagk8z at32pt
+\font\bookautf=pagk8z at24pt
+\font\sngtitf=pagk8z scaled \magstep2
+\font\sngautf=pagk8z scaled \magstep1
 
 
 %pro debuging	
@@ -21,20 +20,16 @@
 
 %---Pomocná makra------------------------------------
 \def\newpage{\vfil \break}
-\def\centerH#1{\hbox to \hsize{\hss #1 \hss}}
+\def\centerh#1{\hbox to \hsize{\hss #1 \hss}}
 \def\donothing{}
 
 
 %---Zpěvník------------------------------------------
-%TODO: nastavení tisku - velikost stránky, velikost okrajů, ...
-%TODO: titulek, podtitulek, autor, obrázek?
-%TODO: vypnout číslování
-
 \nopagenumbers
 
-\def\booktitle#1\par{\vbox to 0.25\vsize{}\centerH{\bigfont #1}\bigskip\nobreak}
+\def\booktitle#1\par{\vbox to 0.25\vsize{}\centerh{\booktitf #1}\bigskip\nobreak}
 
-\def\bookauthor#1\par{\centerH{\smaller #1}}
+\def\bookauthor#1\par{\centerh{\bookautf #1}}
 
 \def\songs{\newpage \footline={\hss\tenrm\folio\hss}}
 
@@ -42,22 +37,18 @@
 %---Píseň--------------------------------------------
 \def\beginsong{\newpage \verscnt 1\relax}
 
-\def\title#1{{\mya #1}\par\bigskip\nobreak
+\def\title#1{{\sngtitf #1}\par\bigskip\nobreak
 	\immediate\write\writef{\string\tocline{#1}{\the\pageno}}
 }
 
-\def\author#1{{\myb #1}\par\bigskip}
+\def\author#1{{\sngautf #1}\par\bigskip}
 
 
 %---Předehra-----------------------------------------
-\def\intro#1\par{{\it Intro: } #1 \medskip}
+\def\intro#1\par{{\it Intro: } #1 \bigskip}
 
 
 %---Refrén-------------------------------------------
-%TODO: refrén s parametrem/bez parametru
-%TODO: podruhé vložený refrain buď vložit celý, nebo jen první řádek a ...?
-%\def\refrain{{\bf Ref.}\bigskip}
-
 {\catcode`\^^M=13
 \gdef\beginrefrain{\begingroup \catcode`\^^M=13
 \let^^M=\par
@@ -65,7 +56,7 @@
 
 \def\endrefrain{\endgroup\bigskip}
 
-\def\refrain{{\bf Ref.}}
+\def\refrain{{\bf Ref.}\par\bigskip}
 
 
 %---Sloky--------------------------------------------
@@ -73,21 +64,17 @@
 {\catcode`\^^M=13
 \gdef\beginverse{\begingroup \catcode`\^^M=13
 \let^^M=\par
-\par 	\noindent \hbox to 0pt{\hss \the\verscnt \kern.2em}\ignorespaces}}
+\par \noindent \hbox to 0pt{\hss \the\verscnt) \kern.2em}\ignorespaces}}
 
 \def\endverse{\bigskip\endgroup \advance\verscnt 1\relax}
 
 
 %---Vysázení akordů----------------------------------
-%TODO: doupravit odsazení - zarovnat se začátkem písmene, ke kterému patří?
-%TODO: bug-akord na začátku řádky?
 %\def\chord#1{{\it \kern-.75em\lower-1em\hbox{#1}}}
 \def\chord#1{\noindent\raise 12pt \hbox to 0pt{\kern0pt {\it #1} \hss}}
 
 
 %---Repetice-----------------------------------------
-%TODO: Jak s volitelnými parametry?
-%TODO: Přidat účaří, zarovnat s textem
 \catcode`\|=13
 
 {
@@ -128,7 +115,7 @@ Q}}
 \def\drawr{\pdfrefxform\rrepsignnb}
 
 
-%---Obsah-------------------------------------------------
+%---Obsah----------------------------------------------
 
 \newread\readf
 \newwrite\writef
