@@ -1,0 +1,177 @@
+% Mockup
+% \chord{Ami} -- Napise Akord nad text
+% \drawchord{Ami} -- Napise Akord nad text a prida jeho obrazek na okraj stranky
+% \drawspecialchord{Gmi}{0}{2}{3}{2} -- Napise akord nad text a nakresli ho na okraj stranky podle definice
+%
+%%%%%%%%%%%
+% TODO
+% >> Jak se zadavaj parametry do makra ukulchord
+% >> Odendat zadratovani a dat to do promenejch aby to nebyla prasarna
+% ?? Jak bude vypadat kytara?
+% >> Provest prevod \ch{G} na \ukulelechord 0 2 3 2
+% >> Kdyz nenactu tak upozornit a napsat tam otaznicek
+% >> Definice akorduu v jinem inkudoivanem souboru
+% >> Jina jmena GLOBALNICH promenych
+% >> PDF literal
+% >> Odenat Tkiz
+% >> Odendat parametry. S global promenjma je to stejne asi jedno
+% >> Rozchodit cudliky
+% >> Spravne akord ohranicit boxem
+% >> Zarovnat jmeno akordu nad jeho obrazek
+%
+% >> MERGE s akordama od holky
+% >> Opravit pole co uklada akordy (chord:)
+% >< Udelat pole co uklada akordy co na teto strance chci zobrazit.
+% >< dostat se k nemu v output rutine a dokazat, ze si pomoci neho najde akord.
+%
+% >> Sazet nejak rozumne na okraj stranky
+% >> Definovat makro co na kraj stranky nakresli akord na zaklade cisel
+% >< Definovat makro co na kraj stranky nakresli akord na zaklade jmena
+% >> Definovat makro co nadsebe napise akord a jeste zavola makro co kresli na zaklade jmena
+% 
+% >> Rozdelit do dvou souboru, jeden co se stara o sazbu a jede co je instrument-specific
+% >> Napravit zadrátovanou vazbu v output rutině
+% >> Otestovat jestli zustala zadratyovana sazba v output rutine (zvetsit/znemsit stranku)
+% >> Opravit ty divný chyby s vertikálním odlamováním
+% >> Rozumě dělat mezery mezi akordy
+% - Rozumě nastavit první odsazení aby to bylo nějak neodioticky zarovnaný
+% >> Cisla stranek
+% >> Sjednotit jayzk komentářů a proměnejch - jenom english
+% >> Zarovnávání nadpisu na střed
+% - Updatovat dokumentaci + priklady
+%
+% - Nakreslit kytaru
+% - Zprovoznit kytaru
+% ?? Označit vypsané akordy t5eba bold?
+% 
+%%%%%%%%%%%%%%%%%%
+
+%---Typeset-----------------------------------------
+\input drawchord/typesetchords
+
+%---Draw chord--------------------------------------
+\newdimen\ballradius
+\ballradius = 1.6ex
+\newcount\holderwidth
+\holderwidth = 3
+\newcount\stringwidth
+\stringwidth = 1 
+
+% Draw black dot on Position X , Position Y , Radius
+% Circle macro from TeX pro pragmatiky by Petr Olšák
+\def\circle#1#2{
+	q
+  % Circle at #1 #2
+	% Draw circle with radius 0.5 at with center at 0x0
+	.5 0 m
+	.5 .276 .276 .5 0 .5 c
+	-.276 .5 -.5 .276 -.5 0 c
+	-.5 -.276 -.276 -.5 0 -.5 c
+	.276 -.5 .5 -.276 .5 0 c
+	% adjust size 
+	5 0 0 5 0 0 cm
+	% adjust position
+	1 0 0 1 #1 #2 cm
+	f
+	S
+	Q
+}
+
+\def\drawuchord#1{% It produces a simple horizontal box in the end
+\hbox to 44pt{\hskip7pt%  horizontal align
+\vbox to 58pt{\vskip3pt%  spring above top of the text
+\hbox{\hfil\ifnum\ustringA=11? #1\else#1\fi\hfil}\vfil%
+\hbox{\pdfliteral{
+		q
+		% -- Draw top holder --
+		\the\holderwidth w
+		1 j
+		0 41 m
+		30 41 l
+		s 
+		% -- Draw strings --
+		\the\stringwidth w
+		0 j
+		00 40 m 00 -03 l S
+		10 40 m 10 -03 l S
+		20 40 m 20 -03 l S
+		30 40 m 30 -03 l S
+		% -- Draw Frets --
+		00 30 m 30 30 l S
+		00 20 m 30 20 l S
+		00 10 m 30 10 l S
+		00 00 m 30 00 l S
+		% -- Draw balls --
+		\ifnum\ustringA<8
+		\circle{0}{\the\ustringA}
+		\fi
+		\ifnum\ustringB<8
+		\circle{2}{\the\ustringB}
+		\fi
+		\ifnum\ustringC<8
+		\circle{4}{\the\ustringC}
+		\fi
+		\ifnum\the\ustringD<8
+		\circle{6}{\the\ustringD}
+		\fi
+		Q
+	}}\vskip3pt}\hfil}}
+
+%---Translate---------------------------------------
+
+% Saving ukulele chord
+\def\saveuchord #1#2{%
+\expandafter\def\csname uchord:#1\endcsname{#2}}
+
+% Loading ukulele chord
+\def\loaduchord #1{\csname uchord:#1\endcsname}
+
+% Inserting definitions
+\input drawchord/ukuleleDICT.tex
+
+% Prining based on Name of chord
+\newcount\ustringA
+\newcount\ustringB
+\newcount\ustringC
+\newcount\ustringD
+
+% Used for checking if the chord was succesfully loaded. You cannot hold a -1 fret!
+% If chord is loaded that \ustringX variables are overwritten.
+\def\minusone{%
+\ustringA = -1%
+\ustringB = -1%
+\ustringC = -1%
+\ustringD = -1}
+
+% Translate the number of fret to hold {inputted} to the Y coordinate used in pdf literal
+\def\preparechord{%
+\multiply\ustringA by -2\advance \ustringA by 9%
+\multiply\ustringB by -2\advance \ustringB by 9%
+\multiply\ustringC by -2\advance \ustringC by 9%
+\multiply\ustringD by -2\advance \ustringD by 9%
+}
+
+% Draw a ukulele chord
+\def\uchord #1{%
+\minusone\loaduchord{#1}\preparechord\drawuchord {#1}%
+}
+
+%---Usage-----------------------------------------
+% The chord is in predefined library
+\def\drawchord#1{%
+\chord{#1}% Vypis akord nad text
+\count253 0
+\insert253{\kern1em\strut\uchord{#1}}%
+}
+
+% Chord is not in predefined library
+\def\drawspecialchord#1#2#3#4#5{%
+\chord{#1}% Vypis akord na text
+\ustringA = #2%
+\ustringB = #3%
+\ustringC = #4%
+\ustringD = #5%
+\preparechord%
+\count253 0
+\insert253{\kern1em\strut\drawuchord{#1}}%
+}
