@@ -1,12 +1,16 @@
 # Makra pro vytvoření zpěvníčku s akordy #
 
-Tato práce vznikla v rámci předmětu BI-TEX na FIT ČVUT. Jejím obsahem jsou makra umožňující vytvoření jednoduchého zpěvníčku z akordy.
+Tato práce vznikla v rámci předmětu BI-TEX na FIT ČVUT. Jejím obsahem jsou makra umožňující vytvoření jednoduchého zpěvníčku z akordy pro libovolné strunné nástroje.
 
 ## Obsah repozitáře ##
 
 * zpevnik-makra.tex - soubor s makry
 * zpevnik.tex - příklad použití maker
 * pisnicky/*.tex - adresář obsahující jednotlivé písně
+* drawchord/*.tex - adresář obsahující soubory potřebné pro vykreslování hmatníku.
+* * drawchord/typesetchords.tex - Definice output rutiny potřebná k sázení na okraj
+* * drawchord/{NASTROJ}.tex - Makra na kresbu hmatníku uvedeného nástroje.
+* * drawchord/{NASTROJ}DICT.tex - Slovník hmatů pro uvedený nástroj.
 * zpevnik.pdf - příklad vygenerovaného zpěvníku
 
 ## Použití maker ##
@@ -120,7 +124,24 @@ co je blázen a nemá šajn.:|
 \refrain
 ```
 
-### Vygenerování pdf ###
+### Vykreslování akordů ###
+Vykresování akordů se aktivuje deklarací toho, jaký nástroj chceme používat. To uděláme v hlavním souboru zpěvníku (zpevnik.tex) pomocí příkazu
+
+```
+#!tex
+
+\include drawchord/{NASTROJ}
+```
+kde *NASTROJ* může (zatím) nabývat hodnot 'ukulele' nebo <s>'guitar'</s>.
+
+Vypisovat všechny akordy v písni obrázkami hmatníku je z hlediska užití zpěvníku špatně. Lehké akordy se vyskytují ve všech písničkách a tak bychom je kreslili na každou stránku i přesto, že je muzikant už zná. Sám muzikant nejlépe ví které akordy zná a které ne. Proto necháme rozhodnutí o tom, zda akord vykreslit či ne, na něm.
+
+Když se rozhodneme, že akord je těžký a chceme ho vypsat tak jednoduše připíšeme makro **\chord** na **\drawchord**. Podle toho jaký nástroj jsme zvolili se vyhledá hmat v přílišeném slovníku hmatů a na pravý okraj stránky se hmatník vykreslí.
+
+Pokud akord nebude ve slovníku nalezen tak se vykreslí prázdný hmatník a před jménem akordu se napíše otazník.
+
+
+## Vygenerování pdf ##
 Pro vygenerování pdf zpěvníku použijte
 
 ```
@@ -128,6 +149,3 @@ Pro vygenerování pdf zpěvníku použijte
 
 pdfcsplain <nazev>
 ```
-
-### Rozšíření ###
-Pro tento projekt se chystají další rozšíření.
