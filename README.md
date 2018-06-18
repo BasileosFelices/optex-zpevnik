@@ -7,10 +7,10 @@ Tato práce vznikla v rámci předmětu BI-TEX na FIT ČVUT. Jejím obsahem jsou
 * zpevnik-makra.tex - soubor s makry
 * zpevnik.tex - příklad použití maker
 * pisnicky/*.tex - adresář obsahující jednotlivé písně
-* drawchord/*.tex - adresář obsahující soubory potřebné pro vykreslování hmatníku.
-* * drawchord/typesetchords.tex - Definice output rutiny potřebná k sázení na okraj
-* * drawchord/{NASTROJ}.tex - Makra na kresbu hmatníku uvedeného nástroje.
-* * drawchord/{NASTROJ}DICT.tex - Slovník hmatů pro uvedený nástroj.
+    * drawchord/*.tex - adresář obsahující soubory potřebné pro vykreslování hmatníku.
+    * drawchord/typesetchords.tex - Definice output rutiny potřebná k sázení na okraj
+    * drawchord/{NASTROJ}.tex - Makra na kresbu hmatníku uvedeného nástroje.
+    * drawchord/{NASTROJ}DICT.tex - Slovník hmatů pro uvedený nástroj.
 * zpevnik.pdf - příklad vygenerovaného zpěvníku
 
 ## Použití maker ##
