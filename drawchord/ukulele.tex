@@ -183,7 +183,7 @@
 \def\drawchord#1{%
 \chord{#1}% Vypis akord nad text
 \count253 0
-\insert253{\kern1em\strut\uchord{#1}}%
+\insert253{{\rm\kern1em\strut\uchord{#1}}}%
 }
 
 % Chord is not in predefined library
@@ -195,5 +195,5 @@
 \ustringD = #5%
 \preparechord%
 \count253 0
-\insert253{\kern1em\strut\drawuchord{#1}}%
+\insert253{{\rm\kern1em\strut\drawuchord{#1}}}%
 }
