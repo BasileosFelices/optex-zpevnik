@@ -1,8 +1,3 @@
-% Mockup
-% \chord{Ami} -- Napise Akord nad text
-% \drawchord{Ami} -- Napise Akord nad text a prida jeho obrazek na okraj stranky
-% \drawspecialchord{Gmi}{0}{2}{3}{2} -- Napise akord nad text a nakresli ho na okraj stranky podle definice
-%
 %%%%%%%%%%%
 % TODO
 % >> Jak se zadavaj parametry do makra ukulchord
@@ -12,7 +7,7 @@
 % >> Kdyz nenactu tak upozornit a napsat tam otaznicek
 % >> Definice akorduu v jinem inkudoivanem souboru
 % >> Jina jmena GLOBALNICH promenych
-% >> PDF literal
+% >> udelat to pomoci PDF literal!
 % >> Odenat Tkiz
 % >> Odendat parametry. S global promenjma je to stejne asi jedno
 % >> Rozchodit cudliky
@@ -38,13 +33,40 @@
 % >> Cisla stranek
 % >> Sjednotit jayzk komentářů a proměnejch - jenom english
 % >> Zarovnávání nadpisu na střed
-% - Updatovat dokumentaci + priklady
+% >> Updatovat dokumentaci + priklady
 %
-% - Nakreslit kytaru
-% - Zprovoznit kytaru
+% >> Nakreslit kytaru
+% >> Zprovoznit kytaru
 % ?? Označit vypsané akordy t5eba bold?
+% - Dopilat drobnosti v output rutine
+% - Napsat se jako autor do hlavicky.
+%
+% DALSI VYVOJ
+% - Struny co se nehraji, kdyz se hraje akord na kytare (X)
+% - Nějak speciálně označit baré akordy s posunutou kobylkou (naznačit capo?)
 % 
 %%%%%%%%%%%%%%%%%%
+
+%---Author and LINCENCE-----------------------------
+% The drawchord macros were created as an extension
+% of a TeX songbook by Markéta Zadražilová.
+%
+% This project is home at Bitbucket
+% https://bitbucket.org/marketa_zadrazilova/tex/src/v2/
+%
+% The drawchord macros were created by 
+%
+%           Radek Smid
+%      (rad.smid@gmail.com)
+%
+% and are distributed under the GNU GPLv3 licence.
+%--------------------------------------------------
+
+%---Mockup-----------------------------------------
+% \chord{Ami} -- Napise Akord nad text
+% \drawchord{Ami} -- Napise Akord nad text a prida jeho obrazek na okraj stranky
+% \drawspecialchord{Gmi}{0}{2}{3}{2} -- Napise akord nad text a nakresli ho na okraj stranky podle definice
+%
 
 %---Typeset-----------------------------------------
 \input drawchord/typesetchords
