@@ -1,0 +1,167 @@
+%---Author and LINCENCE-----------------------------
+% The drawchord macros were created as an extension
+% of a TeX songbook by Markéta Zadražilová.
+%
+% This project is home at Bitbucket
+% https://bitbucket.org/marketa_zadrazilova/tex/src/v2/
+%
+% The drawchord macros were created by 
+%
+%           Radek Smid
+%      (rad.smid@gmail.com)
+%
+% and are distributed under the GNU GPLv3 licence.
+%--------------------------------------------------
+
+%---Mockup-----------------------------------------
+% \chord{Ami} -- Napise Akord nad text
+% \drawchord{Ami} -- Napise Akord nad text a prida jeho obrazek na okraj stranky
+% \drawspecialchord{Gmi}{0}{2}{3}{2}{0}{0} -- Napise akord nad text a nakresli ho na okraj stranky podle definice
+
+%---Typeset-----------------------------------------
+\input drawchord/typesetchords
+
+%---Draw chord--------------------------------------
+\newdimen\ballradius
+\ballradius = 1.6ex
+\newcount\holderwidth
+\holderwidth = 3
+\newcount\stringwidth
+\stringwidth = 1 
+
+% Draw black dot on Position X , Position Y , Radius
+% Circle macro from TeX pro pragmatiky by Petr Olšák
+\def\circle#1#2{
+	q
+  % Circle at #1 #2
+	% Draw circle with radius 0.5 at with center at 0x0
+	.5 0 m
+	.5 .276 .276 .5 0 .5 c
+	-.276 .5 -.5 .276 -.5 0 c
+	-.5 -.276 -.276 -.5 0 -.5 c
+	.276 -.5 .5 -.276 .5 0 c
+	% adjust size 
+	5 0 0 5 0 0 cm
+	% adjust position
+	1 0 0 1 #1 #2 cm
+	f
+	S
+	Q
+}
+
+\def\drawgchord#1{% It produces a simple horizontal box in the end
+\hbox to 44pt{\hskip7pt%  horizontal align
+\vbox to 58pt{\vskip3pt%  spring above top of the text
+\hbox{\hfil\ifnum\gstringA=11? #1\else#1\fi\hfil}\vfil%
+\hbox{\pdfliteral{
+		q
+		% -- Draw top holder --
+		\the\holderwidth w
+		1 j
+		0 41 m
+		30 41 l
+		s 
+		% -- Draw strings --
+		\the\stringwidth w
+		0 j
+		00 40 m 00 -03 l S
+		06 40 m 06 -03 l S
+		12 40 m 12 -03 l S
+		18 40 m 18 -03 l S
+		24 40 m 24 -03 l S
+		30 40 m 30 -03 l S
+		% -- Draw Frets --
+		00 30 m 30 30 l S
+		00 20 m 30 20 l S
+		00 10 m 30 10 l S
+		00 00 m 30 00 l S
+		% -- Draw balls --
+		\ifnum\gstringA<8
+		\circle{0}{\the\gstringA}
+		\fi
+		\ifnum\gstringB<8
+		\circle{1.2}{\the\gstringB}
+		\fi
+		\ifnum\gstringC<8
+		\circle{2.4}{\the\gstringC}
+		\fi
+		\ifnum\the\gstringD<8
+		\circle{3.6}{\the\gstringD}
+		\fi
+		\ifnum\the\gstringE<8
+		\circle{4.8}{\the\gstringE}
+		\fi
+		\ifnum\the\gstringF<8
+		\circle{6}{\the\gstringF}
+		\fi
+		Q
+	}}\vskip3pt}\hfil}}
+
+%---Translate---------------------------------------
+
+% Saving ukulele chord
+\def\savegchord #1#2{%
+\expandafter\def\csname gchord:#1\endcsname{#2}}
+
+% Loading ukulele chord
+\def\loadgchord #1{\csname gchord:#1\endcsname}
+
+% Inserting definitions
+\input drawchord/guitarDICT.tex
+
+% Prining based on Name of chord
+\newcount\gstringA
+\newcount\gstringB
+\newcount\gstringC
+\newcount\gstringD
+\newcount\gstringE
+\newcount\gstringF
+
+
+% Used for checking if the chord was succesfully loaded. You cannot hold a -1 fret!
+% If chord is loaded that \gstringX variables are overwritten.
+\def\minusone{%
+\gstringA = -1%
+\gstringB = -1%
+\gstringC = -1%
+\gstringD = -1%
+\gstringE = -1%
+\gstringF = -1%
+}
+
+% Translate the number of fret to hold {inputted} to the Y coordinate used in pdf literal
+\def\preparechord{%
+\multiply\gstringA by -2\advance \gstringA by 9%
+\multiply\gstringB by -2\advance \gstringB by 9%
+\multiply\gstringC by -2\advance \gstringC by 9%
+\multiply\gstringD by -2\advance \gstringD by 9%
+\multiply\gstringE by -2\advance \gstringE by 9%
+\multiply\gstringF by -2\advance \gstringF by 9%
+}
+
+% Draw a ukulele chord
+\def\gchord #1{%
+\minusone\loadgchord{#1}\preparechord\drawgchord {#1}%
+}
+
+%---Usage-----------------------------------------
+% The chord is in predefined library
+\def\drawchord#1{%
+\chord{#1}% Vypis akord nad text
+\count253 0
+\insert253{\kern1em\strut\gchord{#1}}%
+}
+
+% Chord is not in predefined library
+\def\drawspecialchord#1#2#3#4#5#6#7{%
+\chord{#1}% Vypis akord na text
+\gstringA = #2%
+\gstringB = #3%
+\gstringC = #4%
+\gstringD = #5%
+\gstringE = #6%
+\gstringF = #7%
+\preparechord%
+\count253 0
+\insert253{\kern1em\strut\drawgchord{#1}}%
+}

@@ -132,7 +132,7 @@ Vykresování akordů se aktivuje deklarací toho, jaký nástroj chceme použí
 
 \include drawchord/{NASTROJ}
 ```
-kde *NASTROJ* může (zatím) nabývat hodnot 'ukulele' nebo <s>'guitar'</s>.
+kde *NASTROJ* může (zatím) nabývat hodnot 'ukulele' nebo 'guitar'.
 
 Vypisovat všechny akordy v písni obrázkami hmatníku je z hlediska užití zpěvníku špatně. Lehké akordy se vyskytují ve všech písničkách a tak bychom je kreslili na každou stránku i přesto, že je muzikant už zná. Sám muzikant nejlépe ví které akordy zná a které ne. Proto necháme rozhodnutí o tom, zda akord vykreslit či ne, na něm.
 
