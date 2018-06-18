@@ -128,3 +128,6 @@ Pro vygenerování pdf zpěvníku použijte
 
 pdfcsplain <nazev>
 ```
+
+### Rozšíření ###
+Pro tento projekt se chystají další rozšíření.
