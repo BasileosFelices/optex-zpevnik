@@ -1,50 +1,7 @@
 %%%%%%%%%%%
-% TODO
-% >> Jak se zadavaj parametry do makra ukulchord
-% >> Odendat zadratovani a dat to do promenejch aby to nebyla prasarna
-% ?? Jak bude vypadat kytara?
-% >> Provest prevod \ch{G} na \ukulelechord 0 2 3 2
-% >> Kdyz nenactu tak upozornit a napsat tam otaznicek
-% >> Definice akorduu v jinem inkudoivanem souboru
-% >> Jina jmena GLOBALNICH promenych
-% >> udelat to pomoci PDF literal!
-% >> Odenat Tkiz
-% >> Odendat parametry. S global promenjma je to stejne asi jedno
-% >> Rozchodit cudliky
-% >> Spravne akord ohranicit boxem
-% >> Zarovnat jmeno akordu nad jeho obrazek
-%
-% >> MERGE s akordama od holky
-% >> Opravit pole co uklada akordy (chord:)
-% >< Udelat pole co uklada akordy co na teto strance chci zobrazit.
-% >< dostat se k nemu v output rutine a dokazat, ze si pomoci neho najde akord.
-%
-% >> Sazet nejak rozumne na okraj stranky
-% >> Definovat makro co na kraj stranky nakresli akord na zaklade cisel
-% >< Definovat makro co na kraj stranky nakresli akord na zaklade jmena
-% >> Definovat makro co nadsebe napise akord a jeste zavola makro co kresli na zaklade jmena
-% 
-% >> Rozdelit do dvou souboru, jeden co se stara o sazbu a jede co je instrument-specific
-% >> Napravit zadrátovanou vazbu v output rutině
-% >> Otestovat jestli zustala zadratyovana sazba v output rutine (zvetsit/znemsit stranku)
-% >> Opravit ty divný chyby s vertikálním odlamováním
-% >> Rozumě dělat mezery mezi akordy
-% >> Rozumě nastavit první odsazení aby to bylo nějak chytre zarovnaný
-% >> Cisla stranek
-% >> Sjednotit jayzk komentářů a proměnejch - jenom english
-% >> Zarovnávání nadpisu na střed
-% >> Updatovat dokumentaci + priklady
-%
-% >> Nakreslit kytaru
-% >> Zprovoznit kytaru
-% ?? Označit vypsané akordy t5eba bold?
-% ?? Dopilat drobnosti v output rutine
-% >> Napsat se jako autor do hlavicky.
-%
 % DALSI VYVOJ
 % - Struny co se nehraji, kdyz se hraje akord na kytare (X)
 % - Nějak speciálně označit baré akordy s posunutou kobylkou (naznačit capo?)
-% 
 %%%%%%%%%%%%%%%%%%
 
 %---Author and LINCENCE-----------------------------
@@ -149,7 +106,7 @@
 \def\loaduchord #1{\csname uchord:#1\endcsname}
 
 % Inserting definitions
-\input drawchord/ukuleleDICT.tex
+\input drawchord/ukuleleDICT.tex % load dictionary
 
 % Prining based on Name of chord
 \newcount\ustringA
