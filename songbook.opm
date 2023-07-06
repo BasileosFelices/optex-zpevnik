@@ -1,8 +1,8 @@
 %---Makra pro zpěvníček-------------------------------
 
-\_def\_zpevnik_version{0.1, 2023-07-06}
-\_codedecl \beginscenar {Painless screeplay formatting <\_scenar_version>}
-\_namespace{scenar}
+\_def\_songbook_version{0.1, 2023-07-06}
+\_codedecl \chord {Modular songbook formatter <\_songbook_version>}
+\_namespace{songbook}
 
 \input cavantga
 
@@ -133,3 +133,29 @@ Q}}
   \input toc						% vloží obsah souboru s obsahem
 }
 
+\_endnamespace
+\_endcode
+
+\_doc
+    % \load [doc,scenar]
+
+    % \tit Painless screenplay formatting\fnotemark1
+    % \fnotetext{Available at \url{https://github.com/BasileosFelices/optex-scenar}}
+    % \hfill Version: \_scenar_version \par
+    % \centerline{semestrální práce BI-\TeX/ LS 2022/2023}
+    % \centerline{\it Filip Špelina, 2023}
+
+    % \notoc\nonum\sec Table of contents
+    % \maketoc
+    % \printdoctail scenar.opm % prints the documantation written after \_endcode
+    % \sec[impl] Implementation
+    % \printdoc scenar.opm % print code + local documentation
+    % \sec Index
+    % \begmulti 3
+    %     \tt \makeindex     
+    % \endmulti
+    % \bye
+\_cod
+
+\endinput
+\bye
