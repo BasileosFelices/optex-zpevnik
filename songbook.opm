@@ -1,5 +1,9 @@
 %---Makra pro zpěvníček-------------------------------
 
+\_def\_zpevnik_version{0.1, 2023-07-06}
+\_codedecl \beginscenar {Painless screeplay formatting <\_scenar_version>}
+\_namespace{scenar}
+
 \input cavantga
 
 \font\booktitf=pagk8z at32pt
