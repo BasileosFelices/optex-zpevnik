@@ -4,15 +4,22 @@
 \_codedecl \chord {Modular songbook formatter <\_songbook_version>}
 \_namespace{songbook}
 
-\input cavantga
+    \_doc
+        Setting up the document format using \optex/ macros. 
+    \_cod
 
-\font\booktitf=pagk8z at32pt
-\font\bookautf=pagk8z at24pt
-\font\sngtitf=pagk8z scaled \magstep2
-\font\sngautf=pagk8z scaled \magstep1
+\_initunifonts
+\_cslang
+\_fontfam[kp fonts]
+\_margins/1 a4 (2.5,2.5,2.5,2.5)cm  % okraje 2.5 cm, strana A4
+\_typosize[11/14]
+\_parindent=0pt
+% \_parskip\_smallskipamount
 
-\parindent=0 pt
-
+% \font\booktitf=pagk8z at32pt
+% \font\bookautf=pagk8z at24pt
+% \font\sngtitf=pagk8z scaled \magstep2
+% \font\sngautf=pagk8z scaled \magstep1
 
 % pro debuging	
 \def\boxed#1{\hbox{\vrule\vbox{\hrule\hbox{#1}\hrule}\vrule}}
@@ -23,9 +30,10 @@
 
 
 %---Pomocná makra------------------------------------
-\def\newpage{\vfil \break}
-\def\centerh#1{\hbox to \hsize{\hss #1 \hss}}
-\def\donothing{}
+\_def\.newpage{\vfil \break}
+\_def\.centerh#1{\hbox to \hsize{\hss #1 \hss}}
+% \_def\donothing{}
+% redundant with \relax
 
 
 %---Zpěvník------------------------------------------
@@ -60,7 +68,6 @@
 \def\endrefrain{\endgroup\par\bigskip\allowbreak}
 
 \def\refrain{\noindent{\bf Ref.}\par\bigskip\allowbreak}
-
 
 %---Sloky--------------------------------------------
 %TODO: Odsazení čísel slok
