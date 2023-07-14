@@ -5,56 +5,116 @@
 \_namespace{songbook}
 
     \_doc
-        Setting up the document format using \optex/ macros. 
+        \`\beginsongbook` sets the document format using \optex/ macros with some default setinngs. Can be overriden after using.
     \_cod
 
-\_initunifonts
-\_cslang
-\_fontfam[kp fonts]
-\_margins/1 a4 (2.5,2.5,2.5,2.5)cm  % okraje 2.5 cm, strana A4
-\_typosize[11/14]
-\_parindent=0pt
-% \_parskip\_smallskipamount
-
-% \font\booktitf=pagk8z at32pt
-% \font\bookautf=pagk8z at24pt
-% \font\sngtitf=pagk8z scaled \magstep2
-% \font\sngautf=pagk8z scaled \magstep1
+\_def\.beginsongbook{
+    \_initunifonts
+    \_cslang
+    \_fontfam[kp fonts]
+    \_margins/1 a4 (2.5,2.5,2.5,2.5)cm  % okraje 2.5 cm, strana A4
+    \_typosize[11/14]
+    \_parindent=0pt
+}
 
 % pro debuging	
 \def\boxed#1{\hbox{\vrule\vbox{\hrule\hbox{#1}\hrule}\vrule}}
 
-
 % čítač slok
-\newcount\verscnt
 
+    \_doc
+        \`\.verscnt` holds the number of current verse. Is reset at the songbeginning.
+    \_cod
 
-%---Pomocná makra------------------------------------
-\_def\.newpage{\vfil \break}
-\_def\.centerh#1{\hbox to \hsize{\hss #1 \hss}}
-% \_def\donothing{}
-% redundant with \relax
+\_newcount\.verscnt
+
+    \_doc
+        Helper internal \`\.newpage` starts a new page.
+    \_cod
+
+\_def\.newpage{\_vfil\_break}
+% \_def\.centerh#1{\_hbox to \_hsize{\_hss #1 \_hss}} % deprecated - optex has its own \centerline - identical
 
 
 %---Zpěvník------------------------------------------
-\nopagenumbers							% vypnutí číslování stránek
+% \nopagenumbers							% vypnutí číslování stránek
 
-\def\booktitle#1\par{\vbox to 0.25\vsize{}\centerh{\booktitf #1}\par\bigskip\nobreak}
+    \_doc   
+        \`\titlepage` prints an title page with before specified parameters.
+        All in all using `\titlepage` when file format is changed is not adviced without editing macros below as well.
+        \`\title``{text}` saves screenplay title. This is the only mandatory parameter. Similarly you can specify following: 
+        \`\subtitle``{text}`, \`\author``{text}`, \`\basedon``{text}` and \`\date``{text}`. This part is mostly copied from \ulink[https://github.com/BasileosFelices/optex-scenar]{\optex/ scenar package.}
+    \_cod
 
-\def\bookauthor#1\par{\centerh{\bookautf #1}\par\bigskip}
+\_def\.title#1{ \_def\.savedtitle{#1} }
+\_def\.subtitle#1{ \_def\.savedsubtitle{#1} }
+\_def\.author#1{ \_def\.savedauthor{#1} }
+\_def\.basedon#1{ \_def\.savedbasedon{#1} }
+\_def\.date#1{ \_def\.saveddate{#1} }
 
-\def\songs{\newpage \footline={\hss\tenrm\folio\hss}}		% zapíná číslování stránek
+\_def\.titlefont{\_scalemain\_typoscale[\_magstep4/\_magstep4]}
+\_def\.subtitlefont{\_scalemain\_typoscale[\_magstep2/\_magstep2]}
+\_def\.titletextfont{\_scalemain\_typoscale[\_magstep1/\_magstep1]}
+
+\_sdef{_mt:author:cs}{Autor}
+\_sdef{_mt:author:en}{Author}
+
+\_sdef{_mt:basedon:cs}{Dle předlohy}
+\_sdef{_mt:basedon:en}{Based on}
+
+\_def\.titlepage{\_nopagenumbers
+    {
+        \.titletextfont
+        \_vfill\_break
+        \_vbox to 0.25\_vsize{\_vfil}
+        \_centerline{\.titlefont\.savedtitle\_unskip}\_par
+        \_vbox to 0.1\_vsize{\_vfil}
+        \_ifx\.savedsubtitle\_undefined
+            \_else \_centerline{\.subtitlefont \.savedsubtitle \_unskip}\_par
+            \_vbox to 0.1\_vsize{\_vfil}
+            \_fi
+        \_ifx\.savedauthor\_undefined
+            \_else \_centerline{\_mtext{author}\_unskip}\_par
+            \_centerline{\.savedauthor\_unskip}\_par
+            \_vbox to 0.1\_vsize{\_vfil}
+        \_fi
+        \_ifx\.savedbasedon\_undefined
+            \_else \_centerline{\_mtext{basedon}\_unskip}\_par
+            \_centerline{\.savedbasedon\_unskip}\_par
+            \_vbox to 0.1\_vsize{\_vfil}
+            \_fi
+        \_ifx\.saveddate\_undefined
+            \_else \_vbox to 0.2\_vsize{\_vfil}
+            {\_hfill \.titletextfont \.saveddate \_par}
+            \_fi
+    }
+    \_vfill\_break\_footline={\_hss\_tenrm\_folio\_hss}
+}
+
+\_nspublic \title \subtitle \author \basedon \date \titlepage ;
+
+% Not necessary, titlepage does not globally disable page numbering now.
+% \def\songs{\newpage \footline={\hss\tenrm\folio\hss}}		% zapíná číslování stránek
 
 
 %---Píseň--------------------------------------------
 \def\beginsong{\newpage \verscnt 1\relax}			% započne číslování slok v písni
 
-\def\title#1{\noindent {\sngtitf #1}\par
-	\write\writef{\string\tocline{#1}{\the\pageno}}		% zápis informace do souboru (pro tvorbu obsahu)
-	\bigskip\nobreak}
+% \def\title#1{\noindent {\sngtitf #1}\par
+% 	\write\writef{\string\tocline{#1}{\the\pageno}}		% zápis informace do souboru (pro tvorbu obsahu)
+% 	\bigskip\nobreak}
 
-\def\author#1{\noindent {\sngautf #1}\par\bigskip\nobreak}
+\_eoldef\.songname#1{%
+    \_insec{#1}%
+} 
 
+\_nspublic \songname ;
+
+\_def\.authortitfont{\_scalemain\_typoscale[\_magstep1/\_magstep1]}
+
+\_def\.songauthor#1{\_noindent {\.authortitfont #1}\_par\_bigskip\_nobreak}
+
+\_nspublic \songauthor ;
 
 %---Předehra-----------------------------------------
 \def\intro#1\par{\noindent {\it Intro: } #1\par\bigskip}
@@ -76,7 +136,6 @@
 \noindent \the\verscnt)\par\smallskip\nobreak}}
 
 \def\endverse{\endgroup\par\bigskip\allowbreak \advance\verscnt 1\relax}
-
 
 %---Vysázení akordů----------------------------------
 \def\chord#1{\noindent\raise 11pt \hbox to 0pt{{\it #1} \hss}}
