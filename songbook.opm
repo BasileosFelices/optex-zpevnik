@@ -46,11 +46,11 @@
         \`\subtitle``{text}`, \`\author``{text}`, \`\basedon``{text}` and \`\date``{text}`. This part is mostly copied from \ulink[https://github.com/BasileosFelices/optex-scenar]{\optex/ scenar package.}
     \_cod
 
-\_def\.title#1{ \_def\.savedtitle{#1} }
-\_def\.subtitle#1{ \_def\.savedsubtitle{#1} }
-\_def\.author#1{ \_def\.savedauthor{#1} }
-\_def\.basedon#1{ \_def\.savedbasedon{#1} }
-\_def\.date#1{ \_def\.saveddate{#1} }
+\_def\.booktitle#1{ \_def\.savedtitle{#1} }
+\_def\.booksubtitle#1{ \_def\.savedsubtitle{#1} }
+\_def\.bookauthor#1{ \_def\.savedauthor{#1} }
+\_def\.bookdate#1{ \_def\.saveddate{#1} }
+\_def\.bookversion#1{ \_def\.savedversion{#1} }
 
 \_def\.titlefont{\_scalemain\_typoscale[\_magstep4/\_magstep4]}
 \_def\.subtitlefont{\_scalemain\_typoscale[\_magstep2/\_magstep2]}
@@ -58,9 +58,6 @@
 
 \_sdef{_mt:author:cs}{Autor}
 \_sdef{_mt:author:en}{Author}
-
-\_sdef{_mt:basedon:cs}{Dle předlohy}
-\_sdef{_mt:basedon:en}{Based on}
 
 \_def\.titlepage{\_nopagenumbers
     {
@@ -83,7 +80,11 @@
             \_centerline{\.savedbasedon\_unskip}\_par
             \_vbox to 0.1\_vsize{\_vfil}
             \_fi
-        \_ifx\.saveddate\_undefined
+        \_ifx\.savedversion\_undefined
+            \_else \_vbox to 0.2\_vsize{\_vfil}
+            {\.titletextfont\.savedversion}
+            \_fi
+        \_ifx\.saveddate\_undefined\_par
             \_else \_vbox to 0.2\_vsize{\_vfil}
             {\_hfill \.titletextfont \.saveddate \_par}
             \_fi
@@ -91,7 +92,7 @@
     \_vfill\_break\_footline={\_hss\_tenrm\_folio\_hss}
 }
 
-\_nspublic \title \subtitle \author \basedon \date \titlepage ;
+\_nspublic \booktitle \booksubtitle \bookauthor \bookversion \bookdate \titlepage ;
 
 % Not necessary, titlepage does not globally disable page numbering now.
 % \def\songs{\newpage \footline={\hss\tenrm\folio\hss}}		% zapíná číslování stránek
