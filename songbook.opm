@@ -102,16 +102,27 @@
 
 
 %---Píseň--------------------------------------------
+\_eoldef\.song#1{
+    \.verscnt=1%
+    \.newpage%
+    \_insec{#1}\_relax
+    \.paroneol
+}
 {
     \_catcode`\^^M=13
-        \_gdef\.song{%
-            \.verscnt=1%
-            \.newpage%
-            \_scantoeol\_insec%
-            \_begingroup\_catcode`\^^M=13 \_def^^M{\_par\_nobreak}%
+        \_gdef\.paroneol{%
+            \_begingroup
+            \_catcode`\^^M=13
+            \_def^^M{\_par\_nobreak}%
     }
 }
 
+% \_long\_gdef\.song{%
+%             \.verscnt=1%
+%             \.newpage%
+%             \_scantoeol\_insec
+%             \_begingroup\_catcode`\^^M=13 \_def^^M{\_par\_nobreak}%
+%     }
 \_def\.songend{\_endgroup\_par\_allowbreak}
 
 \_nspublic \song \songend;
@@ -137,7 +148,7 @@
 
 \_nspublic \refrain ; % \ref ;
 
-\_def\.verse {\_bigskip\_llap{{(\_the\.verscnt) }}\_advance\.verscnt}
+\_def\.verse {\_bigskip\_llap{(\_the\.verscnt)}\_advance\.verscnt by 1}
 
 \_nspublic \verse ;
 
