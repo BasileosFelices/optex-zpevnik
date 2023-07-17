@@ -17,8 +17,10 @@
     \_parindent=0pt
 }
 
+\_nspublic \beginsongbook ;
+
 % pro debuging	
-\def\boxed#1{\hbox{\vrule\vbox{\hrule\hbox{#1}\hrule}\vrule}}
+% \def\boxed#1{\hbox{\vrule\vbox{\hrule\hbox{#1}\hrule}\vrule}}
 
 % čítač slok
 
@@ -40,17 +42,18 @@
 % \nopagenumbers							% vypnutí číslování stránek
 
     \_doc   
+        \bf NOT VALID, REWRITE, VERSION NEW 
         \`\titlepage` prints an title page with before specified parameters.
         All in all using `\titlepage` when file format is changed is not adviced without editing macros below as well.
         \`\title``{text}` saves screenplay title. This is the only mandatory parameter. Similarly you can specify following: 
         \`\subtitle``{text}`, \`\author``{text}`, \`\basedon``{text}` and \`\date``{text}`. This part is mostly copied from \ulink[https://github.com/BasileosFelices/optex-scenar]{\optex/ scenar package.}
     \_cod
 
-\_def\.booktitle#1{ \_def\.savedtitle{#1} }
-\_def\.booksubtitle#1{ \_def\.savedsubtitle{#1} }
-\_def\.bookauthor#1{ \_def\.savedauthor{#1} }
-\_def\.bookdate#1{ \_def\.saveddate{#1} }
-\_def\.bookversion#1{ \_def\.savedversion{#1} }
+\_eoldef\.booktitle#1{ \_def\.savedtitle{#1} }
+\_eoldef\.booksubtitle#1{ \_def\.savedsubtitle{#1} }
+\_eoldef\.bookauthor#1{ \_def\.savedauthor{#1} }
+\_eoldef\.bookdate#1{ \_def\.saveddate{#1} }
+\_eoldef\.bookversion#1{ \_def\.savedversion{#1} }
 
 \_def\.titlefont{\_scalemain\_typoscale[\_magstep4/\_magstep4]}
 \_def\.subtitlefont{\_scalemain\_typoscale[\_magstep2/\_magstep2]}
@@ -99,48 +102,68 @@
 
 
 %---Píseň--------------------------------------------
-\def\beginsong{\newpage \verscnt 1\relax}			% započne číslování slok v písni
+{
+    \_catcode`\^^M=13
+        \_gdef\.song{%
+            \.verscnt=1%
+            \.newpage%
+            \_scantoeol\_insec%
+            \_begingroup\_catcode`\^^M=13 \_def^^M{\_par\_nobreak}%
+    }
+}
 
-% \def\title#1{\noindent {\sngtitf #1}\par
-% 	\write\writef{\string\tocline{#1}{\the\pageno}}		% zápis informace do souboru (pro tvorbu obsahu)
-% 	\bigskip\nobreak}
+\_def\.songend{\_endgroup\_par\_allowbreak}
 
-\_eoldef\.songname#1{%
-    \_insec{#1}%
-} 
-
-\_nspublic \songname ;
+\_nspublic \song \songend;
 
 \_def\.authortitfont{\_scalemain\_typoscale[\_magstep1/\_magstep1]}
 
-\_def\.songauthor#1{\_noindent {\.authortitfont #1}\_par\_bigskip\_nobreak}
+\_eoldef\.author#1{%
+    \_noindent{\.authortitfont #1}\_par\_bigskip\_nobreak%
+}
 
-\_nspublic \songauthor ;
+\_nspublic \author ;
 
 %---Předehra-----------------------------------------
-\def\intro#1\par{\noindent {\it Intro: } #1\par\bigskip}
+\_eoldef\.intro#1{\_noindent%
+    {\it Intro
+    \_if$#1$:\_fi} #1\_par\_bigskip
+}
+
+\_nspublic \intro ;
+
+\_def\.refrain {\_bigskip\_llap{{\_bf Ref. }}}
+% \_def\.ref{\.refrain} % alias
+
+\_nspublic \refrain ; % \ref ;
+
+\_def\.verse {\_bigskip\_llap{{(\_the\.verscnt) }}\_advance\.verscnt}
+
+\_nspublic \verse ;
 
 
 %---Refrén-------------------------------------------
-{\catcode`\^^M=13
-\gdef\beginrefrain{\begingroup \catcode`\^^M=13 \def^^M{\par\nobreak}
-\noindent \bf Ref:\par\smallskip\nobreak}}
+% {\catcode`\^^M=13
+% \gdef\beginrefrain{\begingroup \catcode`\^^M=13 \def^^M{\par\nobreak}
+% \noindent \bf Ref:\par\smallskip\nobreak}}
 
-\def\endrefrain{\endgroup\par\bigskip\allowbreak}
+% \def\endrefrain{\endgroup\par\bigskip\allowbreak}
 
-\def\refrain{\noindent{\bf Ref.}\par\bigskip\allowbreak}
+% \def\refrain{\noindent{\bf Ref.}\par\bigskip\allowbreak}
 
 %---Sloky--------------------------------------------
-%TODO: Odsazení čísel slok
-{\catcode`\^^M=13
-\gdef\beginverse{\begingroup \catcode`\^^M=13 \def^^M{\par\nobreak}
-\noindent \the\verscnt)\par\smallskip\nobreak}}
+% %TODO: Odsazení čísel slok
+% {\catcode`\^^M=13
+% \gdef\beginverse{\begingroup \catcode`\^^M=13 \def^^M{\par\nobreak}
+% \noindent \the\verscnt)\par\smallskip\nobreak}}
 
-\def\endverse{\endgroup\par\bigskip\allowbreak \advance\verscnt 1\relax}
+% \def\endverse{\endgroup\par\bigskip\allowbreak \advance\verscnt 1\relax}
 
 %---Vysázení akordů----------------------------------
-\def\chord#1{\noindent\raise 11pt \hbox to 0pt{{\it #1} \hss}}
+\_def\.chord#1{\_noindent\_raise 11pt \_hbox to 0pt{{\_it #1} \_hss}}
+\_def\.ch#1{\.chord{#1}}
 
+\_nspublic \chord \ch;
 
 %---Repetice-----------------------------------------
 % změna catcode u znaku | aby repetice mohla být definována pomocí |:
@@ -185,20 +208,20 @@ Q}}
 
 %---Obsah----------------------------------------------
 % identifikátor souboru pro zápis
-\newwrite\writef
+% \newwrite\writef
 
 % určuje jak bude vypadat zaznam v souboru s obsahem
-\def\tocline#1#2{#1 \dotfill #2\par}		
+% \def\tocline#1#2{#1 \dotfill #2\par}		
 
 % připraví soubor toc.tex pro zápis
-\immediate\openout\writef=toc.tex
+% \immediate\openout\writef=toc.tex
 
 % vloží obsah na samostatnou stránku
-\def\readtoc{\newpage \nopagenumbers
-  \immediate\closeout\writef				% uzavře soubor do kterého se zapisoval obsah
-  \noindent {\sngtitf Obsah:}\par\nobreak\bigskip
-  \input toc						% vloží obsah souboru s obsahem
-}
+% \def\readtoc{\newpage \nopagenumbers
+%   \immediate\closeout\writef				% uzavře soubor do kterého se zapisoval obsah
+%   \noindent {\sngtitf Obsah:}\par\nobreak\bigskip
+%   \input toc						% vloží obsah souboru s obsahem
+% }
 
 \_endnamespace
 \_endcode
