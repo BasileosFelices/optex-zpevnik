@@ -88,7 +88,8 @@
             {\.titletextfont\.savedversion}
             \_fi
         \_ifx\.saveddate\_undefined\_par
-            \_else \_vbox to 0.2\_vsize{\_vfil}
+            \_else 
+            \_ifx\.savedversion\_undefined\_vbox to 0.2\_vsize{\_vfil}\_fi
             {\_hfill \.titletextfont \.saveddate \_par}
             \_fi
     }
