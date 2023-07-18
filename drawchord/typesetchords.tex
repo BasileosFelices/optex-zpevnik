@@ -1,15 +1,47 @@
+% %---Typeset-----------------------------------------%
+% % Redefinition of output routine to have a vertical box on the right side of page ready for typeset of chords
+% % partly inspired by TeXbook naruby - Petr Olšák
+% \output={\shipout\vbox{%
+% %\hrule% Top line
+% \hbox{% Typeset two boxes next to each other
+% %\vrule%
+% \vbox to \pagegoal{\unvbox255\vfil}% First box is the whole text
+% %\vrule% vertical line
+% \vbox to \pagegoal{\bigskip\bigskip\bigskip\unvbox253\vfil}% 1 bigskip for name fo song, one for author and one before the first verse
+% }%\hfil}% Bottom line
+% \vfil\line{\the\footline}}% Outputs one more line with whatever is specified in \footline (pagenumber) 
+% \global\advance\pageno by1}
+
+% \advance\hsize by -0mm
+
+
+% FILIP CHANGES TO OPTEX, this fuckcs up ref files
 %---Typeset-----------------------------------------%
 % Redefinition of output routine to have a vertical box on the right side of page ready for typeset of chords
 % partly inspired by TeXbook naruby - Petr Olšák
-\output={\shipout\vbox{%
-%\hrule% Top line
-\hbox{% Typeset two boxes next to each other
-%\vrule%
-\vbox to \pagegoal{\unvbox255\vfil}% First box is the whole text
-%\vrule% vertical line
-\vbox to \pagegoal{\bigskip\bigskip\bigskip\unvbox253\vfil}% 1 bigskip for name fo song, one for author and one before the first verse
-}%\hfil}% Bottom line
-\vfil\line{\the\footline}}% Outputs one more line with whatever is specified in \footline (pagenumber) 
-\global\advance\pageno by1}
+
+\addto\_begoutput{
+    \shipout\vbox{%
+    \hrule% Top line
+    \hbox{% Typeset two boxes next to each other
+    \vrule%
+    \vbox to \pagegoal{\unvbox255\vfil}% First box is the whole text
+    \vrule% vertical line
+    \vbox to \pagegoal{\bigskip\bigskip\bigskip\unvbox253\vfil}% 1 bigskip for name fo song, one for author and one before the first verse
+    } \hfil% Bottom line
+    }%\vfil\line{\the\footline}}% Outputs one more line with whatever is specified in \footline (pagenumber) 
+    % \global\advance\pageno by1
+}
+
+% \output={\shipout\vbox{%
+% %\hrule% Top line
+% \hbox{% Typeset two boxes next to each other
+% %\vrule%
+% \vbox to \pagegoal{\unvbox255\vfil}% First box is the whole text
+% %\vrule% vertical line
+% \vbox to \pagegoal{\bigskip\bigskip\bigskip\unvbox253\vfil}% 1 bigskip for name fo song, one for author and one before the first verse
+% }%\hfil}% Bottom line
+% \vfil\line{\the\footline}}% Outputs one more line with whatever is specified in \footline (pagenumber) 
+% \global\advance\pageno by1}
 
 \advance\hsize by -0mm

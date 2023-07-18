@@ -1,7 +1,7 @@
 %---Makra pro zpěvníček-------------------------------
 
-\_def\_songbook_version{0.1, 2023-07-06}
-\_codedecl \chord {Modular songbook formatter <\_songbook_version>}
+\_def\_songbook_version{0.2, 2023-07-06}
+\_codedecl \_songbook_chord {Modular songbook formatter <\_songbook_version>}
 \_namespace{songbook}
 
     \_doc
@@ -11,9 +11,10 @@
 \_def\.beginsongbook{
     \_initunifonts
     \_cslang
-    \_fontfam[kp fonts]
+    \_fontfam[cursor]
+    % \mono\rm
     \_margins/1 a4 (2.5,2.5,2.5,2.5)cm  % okraje 2.5 cm, strana A4
-    \_typosize[11/14]
+    \_typosize[11/16]
     \_parindent=0pt
 }
 
@@ -93,7 +94,8 @@
             {\_hfill \.titletextfont \.saveddate \_par}
             \_fi
     }
-    \_vfill\_break\_footline={\_hss\_tenrm\_folio\_hss}
+    \_vfill\_break
+    \_footline={\_hss\_tenrm\_folio\_hss}
 }
 
 \_nspublic \booktitle \booksubtitle \bookauthor \bookversion \bookdate \titlepage ;
@@ -106,32 +108,34 @@
 \_eoldef\.song#1{
     \.verscnt=1%
     \.newpage%
-    \_insec{#1}\_relax
-    \.paroneol
+    \_insec{#1}\_relax%
+    \.paroneol%
 }
 {
     \_catcode`\^^M=13
         \_gdef\.paroneol{%
-            \_begingroup
-            \_catcode`\^^M=13
+            \_begingroup%
+            \_catcode`\^^M=13%    
             \_def^^M{\_par\_nobreak}%
     }
 }
-
+% \_def\.pauseparoneol{\_endgroup\.paroneol}
+\_def\.stopparoneol{\_endgroup}
 % \_long\_gdef\.song{%
 %             \.verscnt=1%
 %             \.newpage%
 %             \_scantoeol\_insec
 %             \_begingroup\_catcode`\^^M=13 \_def^^M{\_par\_nobreak}%
 %     }
-\_def\.songend{\_endgroup\_par\_allowbreak}
+\_def\.songend{\.stopparoneol\_allowbreak\_par}
 
 \_nspublic \song \songend;
 
 \_def\.authortitfont{\_scalemain\_typoscale[\_magstep1/\_magstep1]}
 
 \_eoldef\.author#1{%
-    \_noindent{\.authortitfont #1}\_par\_bigskip\_nobreak%
+    \_leavevmode\_noindent{\.authortitfont#1}\_par\_bigskip\_nobreak%
+    % #1\_par\_bigskip\_nobreak%
 }
 
 \_nspublic \author ;
@@ -144,15 +148,18 @@
 
 \_nspublic \intro ;
 
-\_def\.refrain {\_bigskip\_llap{{\_bf Ref. }}}
+\_def\.refrain {\_bigskip\_leavevmode\_llap{{\_bf Ref.\_enskip}}}
 % \_def\.ref{\.refrain} % alias
 
 \_nspublic \refrain ; % \ref ;
 
-\_def\.verse {\_bigskip\_llap{(\_the\.verscnt)}\_advance\.verscnt by 1}
+\_def\.verse{
+    \_goodbreak\_bigskip\_leavevmode%
+    \_llap{(\_the\.verscnt)\_enskip}%
+    \_advance\.verscnt by 1%
+    }
 
 \_nspublic \verse ;
-
 
 %---Refrén-------------------------------------------
 % {\catcode`\^^M=13
@@ -171,8 +178,10 @@
 
 % \def\endverse{\endgroup\par\bigskip\allowbreak \advance\verscnt 1\relax}
 
+% UNFINISHED RAISING MORE
 %---Vysázení akordů----------------------------------
-\_def\.chord#1{\_noindent\_raise 11pt \_hbox to 0pt{{\_it #1} \_hss}}
+\_def\.chord#1{\_noindent\_raise 12pt \_hbox to 0pt{{\_it #1} \_hss}%
+    \_raise pt \_hbox to 0pt{a\_hss}}
 \_def\.ch#1{\.chord{#1}}
 
 \_nspublic \chord \ch;

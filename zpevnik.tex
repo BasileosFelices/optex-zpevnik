@@ -1,15 +1,19 @@
 \useoptex
 
 \load[songbook]
+\load[mriezka]
+% \grid ,(,,,)
 
 \beginsongbook
 
-\input drawchord/ukulele
+% Disables TOC in v3, changes output routine too drastically currently
+% \input drawchord/ukulele
+\def\drawchord#1{\chord{#1}}
 
 \booktitle Zpěvník
 \booksubtitle pro kytarové večery
 \bookauthor Filip Špelina so far
-\bookversion v0.1
+\bookversion v0.2
 \bookdate červenec 2023
 
 \titlepage
@@ -18,7 +22,8 @@
 
 % --- Seznam písniček ---
 % \songs
-\input pisnicky/all-my-loving
+\load[pisnicky/all-my-loving]
+
 % \input pisnicky/dont_worry
 \input pisnicky/gronska_pisnicka
 % \input pisnicky/fajn-dzob
