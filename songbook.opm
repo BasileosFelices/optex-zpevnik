@@ -185,6 +185,14 @@
 
 \_nspublic \intro ;
 
+\_eoldef\.solo#1{\_noindent%
+    \_goodbreak\_bigskip\_leavevmode%
+    \_llap{{\_bf Solo\_if$#1$:\_fi\_enskip}}%
+    {\.chordfont #1}\_par%
+}
+
+\_nspublic \solo ;
+
 \_def\.refrain{%
     \_goodbreak\_bigskip\_leavevmode%
     \_llap{{\_bf Ref.\_enskip}}%
