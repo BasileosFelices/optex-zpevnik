@@ -1,53 +1,39 @@
-%---Makra pro zpěvníček-------------------------------
+% This is macro package desinged for OpTeX, see http://petr.olsak.net/optex
+% songbook.opm, Filip Spelina, 2023
 
 \_def\_songbook_version{0.3, 2023-07-06}
 \_codedecl \_songbook_chord {Modular songbook formatter <\_songbook_version>}
 \_namespace{songbook}
 
     \_doc
-        \`\beginsongbook` sets the document format using \optex/ macros with some default setinngs. Can be overriden after using.
+        \`\beginsongbook` sets the document format using \optex/ macros with some default setinngs. A4 page with 2.5cm margins. Sans latin modern font. 
+        Can be overriden after using. `\enlang` for both english hyphenation and included texts.  
     \_cod
 
 \_def\.beginsongbook{
-    \_initunifonts
-    \_cslang
-    \_fontfam[lm]
-    \sans\_rm
     \_margins/1 a4 (2.5,2.5,2.5,2.5)cm  % okraje 2.5 cm, strana A4
-    \_typosize[11/16]
+    \_cslang
+    \_fontfam[lm] 
+    \sans\_rm
+    \_typosize[11/14]
     \_parindent=0pt
 }
 
 \_nspublic \beginsongbook ;
 
-% pro debuging	
-% \def\boxed#1{\hbox{\vrule\vbox{\hrule\hbox{#1}\hrule}\vrule}}
-
-% čítač slok
-
-    \_doc
-        \`\.verscnt` holds the number of current verse. Is reset at the songbeginning.
-    \_cod
-
-\_newcount\.verscnt
 
     \_doc
         Helper internal \`\.newpage` starts a new page.
     \_cod
 
 \_def\.newpage{\_vfil\_break}
-% \_def\.centerh#1{\_hbox to \_hsize{\_hss #1 \_hss}} % deprecated - optex has its own \centerline - identical
-
-
-%---Zpěvník------------------------------------------
-% \nopagenumbers							% vypnutí číslování stránek
 
     \_doc   
-        \bf NOT VALID, REWRITE, VERSION NEW 
         \`\titlepage` prints an title page with before specified parameters.
-        All in all using `\titlepage` when file format is changed is not adviced without editing macros below as well.
-        \`\title``{text}` saves screenplay title. This is the only mandatory parameter. Similarly you can specify following: 
-        \`\subtitle``{text}`, \`\author``{text}`, \`\basedon``{text}` and \`\date``{text}`. This part is mostly copied from \ulink[https://github.com/BasileosFelices/optex-scenar]{\optex/ scenar package.}
+        The behaviour of using \~`\titlepage` may be strange if page format is changed. However, spaces should be relative, A5 is still alright. 
+        \`\booktitle``{text}` saves songbook title. This is the only mandatory parameter. Similarly you can specify following: 
+        \`\booksubtitle``{text}`, \`\bookauthor``{text}`, \`\bookversion``{text}` and \`\bookdate``{text}`. This part is mostly copied from \ulink[https://github.com/BasileosFelices/optex-scenar]{\optex/ scenar package.}
+        Additional `\_sdef{_mt:author:??}` can be specified for more language support. Usage is determing by `\??lang` \optex/ macro.
     \_cod
 
 \_eoldef\.booktitle#1{ \_def\.savedtitle{#1} }
@@ -69,7 +55,7 @@
         \_vfill\_break
         \_vbox to 0.25\_vsize{\_vfil}
         \_centerline{\.titlefont\.savedtitle\_unskip}\_par
-        \_vbox to 0.1\_vsize{\_vfil}
+        \_vbox to 0.05\_vsize{\_vfil}
         \_ifx\.savedsubtitle\_undefined
             \_else \_centerline{\.subtitlefont \.savedsubtitle \_unskip}\_par
             \_vbox to 0.1\_vsize{\_vfil}
@@ -85,12 +71,12 @@
             \_vbox to 0.1\_vsize{\_vfil}
             \_fi
         \_ifx\.savedversion\_undefined
-            \_else \_vbox to 0.2\_vsize{\_vfil}
+            \_else \_vbox to 0.25\_vsize{\_vfil}
             {\.titletextfont\.savedversion}
             \_fi
         \_ifx\.saveddate\_undefined\_par
             \_else 
-            \_ifx\.savedversion\_undefined\_vbox to 0.2\_vsize{\_vfil}\_fi
+            \_ifx\.savedversion\_undefined\_vbox to 0.25\_vsize{\_vfil}\_fi
             {\_hfill \.titletextfont \.saveddate \_par}
             \_fi
     }
@@ -100,24 +86,34 @@
 
 \_nspublic \booktitle \booksubtitle \bookauthor \bookversion \bookdate \titlepage ;
 
-% Not necessary, titlepage does not globally disable page numbering now.
-% \def\songs{\newpage \footline={\hss\tenrm\folio\hss}}		% zapíná číslování stránek
+    \_doc   
+        \`\contentpage` prints new page with songbook content. \OpTeX `\maketoc` is utilized here but displayed 
+        in two columns.
+        Page header is language dependent and can be easily edited or new languge definition might be added.
+    \_cod
 
 \_def\.contentpage{
     {
         \_vfill\_break
         \_notoc\_nonum\_insec{\_mtext{toc}}
         \_begmulti 2
-        \_maketoc
+            \_maketoc
         \_endmulti
     }
 }
 
-% Table of content settings
+% Table of content languages
 \_sdef{_mt:toc:cs}{Obsah}
 \_sdef{_mt:toc:en}{Contents}
 
 \_nspublic \contentpage ;
+
+    \_doc   
+        \`\indexpage` prints new page with song index. Songs are sorted in alphabetical order. \OpTeX `\makeindex` is utilized here but displayed 
+        in two columns. This means all \optex/ macros for index can be used normally.
+        Page header is language dependent and can be easily edited or new languge definition might be added.
+        `\_pgprintA` is redefined here, `\_tocdotfill` is added here for dotted line to page number. 
+    \_cod
 
 \_def\.indexpage{
     {
@@ -129,15 +125,23 @@
     }
 }
 
-% Table of content settings
+% Index language definitions
 \_sdef{_mt:index:cs}{Rejstřík}
 \_sdef{_mt:index:en}{Index}
+
 % Redefined to include \_tocdotfill
 \_def\_pgprintA #1{\_tocdotfill\_ilink[pg:#1]{\_cs{_pgi:#1}}} % \ilink[pg:<gpageno>]{<pageno>}
 
 \_nspublic \indexpage ;
 
-%---Píseň--------------------------------------------
+    \_doc   
+        Mandatory \`\song``-song name till end of line-` does not only print a song title but also setups everything for
+        song writing. Starts new page. Verse count is set to 1. Song title is added to both ToC and index (with song number).
+        A song mode where every end of line is treated as `\par` is also started.  
+    \_cod
+
+\_newcount\.verscnt % counts verse number
+
 \_eoldef\.song#1{
     \.verscnt=1%
     \.newpage%
@@ -146,60 +150,96 @@
     \.paroneol%
 }
 
+\_nspublic \song ;
+
+    \_doc
+        \`\.paroneol` starts a new mode (with `\begingroup`) where every end of line is treated as `\par` with `\nobreak`. Catcode of end of line 
+        is set to active character to allow defining it as a macro. \`\.stopparoneol` is defined as counterpart to disable this song mode.
+    \_cod
+
 {
     \_catcode`\^^M=13
         \_gdef\.paroneol{%
             \_begingroup%
             \_catcode`\^^M=13%    
-            \_def^^M{\_par\_nobreak}%
+            \_def^^M{\_nobreak\_par}%
     }
 }
 
-% \_def\.pauseparoneol{\_endgroup\.paroneol}
-\_def\.stopparoneol{\_endgroup}
-% \_long\_gdef\.song{%
-%             \.verscnt=1%
-%             \.newpage%
-%             \_scantoeol\_insec
-%             \_begingroup\_catcode`\^^M=13 \_def^^M{\_par\_nobreak}%
-%     }
+\_def\.stopparoneol{\_endgroup\_normalcatcodes}
+
+    \_doc
+        \`\songend` which should be used at every song end to disable the songmode. 
+        See \~`\.stopparoneol`. If forgotten then this mode is going to be stacked and thats undefined behaviour as far as I am concerned. 
+    \_cod
+
 \_def\.songend{\.stopparoneol\_allowbreak\_par}
 
-\_nspublic \song \songend;
+\_nspublic \songend;
+
+    \_doc
+        \`\author` used to specify song author. Reads till end of line. Only prints as specific title.
+    \_cod
 
 \_def\.authortitfont{\_scalemain\_typoscale[\_magstep1/\_magstep1]}
 
 \_eoldef\.author#1{%
     \_leavevmode\_noindent{\.authortitfont#1}\_par\_bigskip\_nobreak%
-    % #1\_par\_bigskip\_nobreak%
 }
 
 \_nspublic \author ;
 
-%---Předehra-----------------------------------------
+    \_doc
+        \`\intro` used to specify chords in intro. Reads till end of line. Prints given text in \~`\.chordfont`. 
+        `Intro` is printed before margins with `\llap`. Text can be easily changed in `\_sdef` part. 
+    \_cod
+
+\_sdef{_mt:intro:cs}{Intro}
+\_sdef{_mt:intro:en}{Intro}
+
 \_eoldef\.intro#1{\_noindent%
     \_goodbreak\_bigskip\_leavevmode%
-    \_llap{{\_bf Intro\_if$#1$:\_fi\_enskip}}%
+    \_llap{{\_bf\_mtext{intro}\_if$#1$:\_fi\_enskip}}%
     {\.chordfont #1}\_par%
 }
 
 \_nspublic \intro ;
 
+    \_doc
+        \`\solo` used to specify chords in a solo. Reads till end of line. Prints given text in \~`\.chordfont`. 
+        `Solo` is printed before margins with `\llap`. Text can be easily changed in `\_sdef` part. 
+    \_cod
+
+\_sdef{_mt:solo:cs}{Solo}
+\_sdef{_mt:solo:en}{Solo}
+
 \_eoldef\.solo#1{\_noindent%
     \_goodbreak\_bigskip\_leavevmode%
-    \_llap{{\_bf Solo\_if$#1$:\_fi\_enskip}}%
+    \_llap{{\_bf\_mtext{solo}\_if$#1$:\_fi\_enskip}}%
     {\.chordfont #1}\_par%
 }
 
 \_nspublic \solo ;
 
+    \_doc
+        \`\refrain` used to print refrain mark.
+        `Refrain` is printed before margins with `\llap`. Text can be easily changed in `\_sdef` part. 
+    \_cod
+
+\_sdef{_mt:refrain:cs}{Ref.}
+\_sdef{_mt:refrain:en}{Chorus}
+
 \_def\.refrain{%
     \_goodbreak\_bigskip\_leavevmode%
-    \_llap{{\_bf Ref.\_enskip}}%
+    \_llap{{\_bf\_mtext{refrain}\_enskip}}%
     }
-% \_def\.ref{\.refrain} % alias
 
-\_nspublic \refrain ; % \ref ;
+\_nspublic \refrain ;
+
+    \_doc
+        \`\verse` used to print verse mark. Verse number is counted in \~`\.verscnt`
+        Verse number in () is printed before margins with `\llap`. 
+    \_cod
 
 \_def\.verse{%
     \_goodbreak\_bigskip\_leavevmode%
@@ -209,41 +249,37 @@
 
 \_nspublic \verse ;
 
-%---Refrén-------------------------------------------
-% {\catcode`\^^M=13
-% \gdef\beginrefrain{\begingroup \catcode`\^^M=13 \def^^M{\par\nobreak}
-% \noindent \bf Ref:\par\smallskip\nobreak}}
+    \_doc
+        \`\chord` (or \`\ch`, an alias) used to print chord mark.  
+    \_cod
 
-% \def\endrefrain{\endgroup\par\bigskip\allowbreak}
-
-% \def\refrain{\noindent{\bf Ref.}\par\bigskip\allowbreak}
-
-%---Sloky--------------------------------------------
-% %TODO: Odsazení čísel slok
-% {\catcode`\^^M=13
-% \gdef\beginverse{\begingroup \catcode`\^^M=13 \def^^M{\par\nobreak}
-% \noindent \the\verscnt)\par\smallskip\nobreak}}
-
-% \def\endverse{\endgroup\par\bigskip\allowbreak \advance\verscnt 1\relax}
-
-%---Vysázení akordů----------------------------------
 \_def\.chordfont{\_typoscale[800/800]\_bf}
 
 \_def\.chord#1{%
     \_noindent\_raise \_the\_optsize \_hbox to 0pt{{\.chordfont #1}\_hss%
         \_noindent\_raise 4mm \_hbox to 1pt{\_hfil}%
-    }%
-    }
+        }%
+}
 \_def\.ch#1{\.chord{#1}}
 
 \_nspublic \chord \ch;
 
-%---Repetice-----------------------------------------
-% změna catcode u znaku | aby repetice mohla být definována pomocí |:
-\_catcode`\|=13
+    \_doc
+        This part defines \`\repetition` macros. Credit goes to Markéta Zadražilová original songbook 
+        for the pdf literals. CURRENTLY UNFINISHED IN \optex/ V3. Creates new lines, which I dont want it to.
+    \_cod
 
-{\_catcode`\^^M=13
-\gdef|:#1:|#2^^M{\_noindent\drawl{\_bi #1}\drawr\if:#2: {} \else {\_bi \_hskip 0.5em  #2x} \fi}}
+    
+\_def\.repetitionl{\.drawl}
+\_def\.repetitionr#1{\.drawr\if$#1$ {} \else{\_bi\_hskip 0.5em#1x}\fi}
+\_def\.repl{\.repetitionl}
+\_def\.repr#1{\.repetitionr{#1}}
+
+% disabled because its unfinished
+% \_nspublic \repetitionl \repetitionr \repl \repr ;
+// \_catcode`\|=13
+// {\_catcode`\^^M=13
+// \gdef|:#1:|#2^^M{\_noindent\drawl{\_bi #1}\drawr\if:#2: {} \else {\_bi \_hskip 0.5em  #2x} \fi}}
 
 \_def\.lrepsign{\_pdfliteral{q
 .5 w
@@ -278,32 +314,15 @@ Q}}
 \_pdfxform 0 \.rrepsignnb=\_pdflastxform
 \_def\.drawr{\_pdfrefxform\.rrepsignnb}
 
-%---Obsah----------------------------------------------
-% identifikátor souboru pro zápis
-% \newwrite\writef
-
-% určuje jak bude vypadat zaznam v souboru s obsahem
-% \def\tocline#1#2{#1 \dotfill #2\par}		
-
-% připraví soubor toc.tex pro zápis
-% \immediate\openout\writef=toc.tex
-
-% vloží obsah na samostatnou stránku
-% \def\readtoc{\newpage \nopagenumbers
-%   \immediate\closeout\writef				% uzavře soubor do kterého se zapisoval obsah
-%   \noindent {\sngtitf Obsah:}\par\nobreak\bigskip
-%   \input toc						% vloží obsah souboru s obsahem
-% }
-
 \_endnamespace
 \_endcode
 
 \_doc
-    % \load [doc,scenar]
+    % \load [doc,songbook]
 
-    % \tit Painless screenplay formatting\fnotemark1
-    % \fnotetext{Available at \url{https://github.com/BasileosFelices/optex-scenar}}
-    % \hfill Version: \_scenar_version \par
+    % \tit Modular songbook formatter\fnotemark1
+    % \fnotetext{Available at \url{https://github.com/BasileosFelices/optex-zpevnik}}
+    % \hfill Version: \_zpevnik_version \par
     % \centerline{semestrální práce BI-\TeX/ LS 2022/2023}
     % \centerline{\it Filip Špelina, 2023}
 
