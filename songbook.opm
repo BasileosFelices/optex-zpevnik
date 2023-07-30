@@ -1,5 +1,6 @@
 % This is macro package desinged for OpTeX, see http://petr.olsak.net/optex
 % songbook.opm, Filip Spelina, 2023
+% Available at https://github.com/BasileosFelices/optex-zpevnik
 
 \_def\_songbook_version{0.3, 2023-07-06}
 \_codedecl \_songbook_chord {Modular songbook formatter <\_songbook_version>}
@@ -137,7 +138,8 @@
     \_doc   
         Mandatory \`\song``-song name till end of line-` does not only print a song title but also setups everything for
         song writing. Starts new page. Verse count is set to 1. Song title is added to both ToC and index (with song number).
-        A song mode where every end of line is treated as `\par` is also started.  
+        A song mode where every end of line is treated as `\par` is also started. 
+        See \~`\twopagemode` for more about twopage mode. Here we call it the \~`\.twopagecheck` as we need to potentially move the song to an odd page.
     \_cod
 
 \_newcount\.verscnt % counts verse number
@@ -145,6 +147,7 @@
 \_eoldef\.song#1{
     \.verscnt=1%
     \.newpage%
+    \.twopagecheck
     \_insec{#1}\_relax%
     \_iindex{-\_the\_secnum-~#1}%
     \.paroneol%
@@ -263,10 +266,50 @@
 \_def\.ch#1{\.chord{#1}}
 
 \_nspublic \chord \ch;
+    
+    \_doc
+        Here we prepare the documenent for optional twopage mode. \`\.twopagemodesreg` acts like a boolean for enabling the whole functionality in the first place. Holding 0 we mean false and do not enforce the page separation. Holding more than 0, we mean true and enable two page mode.
+        \`\.songpagecount` is a count register which holds the number of pages of current song. At the moment, this must be set manually.  
+    \_cod
+
+\_newcount\.twopagemodesreg % sreg--status register
+\_newcount\.songpagecount
+%default values
+\.twopagemodesreg=0
+\.songpagecount=1
+
+    \_doc
+        \`\twopagemode` enables two page mode by setting \~`\.twopagemodesreg` to 1. \`\twopage` indicates the next song will be a twopage one. This does nothing if the twopagemode is not enabled. 
+        \`\songpages``{<number>}` indicates the song is spread over the inputed number of pages. Bear in mind the implementation of other macros is focused primarily on just two page songs.
+    \_cod
+
+\_def\.twopagemode{\.twopagemodesreg=1}
+
+\_def\.twopage{\.songpagecount=2}
+
+\_def\.songpages#1{\.songpagecount=#1}
+
+\_nspublic \twopagemode \twopage \songpages ;
+
+    \_doc
+        \`\.twopagecheck` inserts an additional empty page and prints a warning to log file if the twopage mode is enabled, the song indicates its longer than a page and is not already correctly positioned.
+        The correct positioning is on an odd page. Resets song page indicator \~`\.songpagescount`.
+    \_cod
+
+\_def\.twopagecheck{%
+    \_ifnum \.twopagemode > 0
+        \_ifnum \.songpagecount > 1 
+            \_ifodd \_pageno \_else
+                \_vfil\_break \_wlog{SONGBOOK WARNING | Two page mode inserts emergency empty page on \_the\_pageno}
+            \_fi
+        \_fi
+    \_fi%
+    \.songpagescount=1
+}
 
     \_doc
         This part defines \`\repetition` macros. Credit goes to Markéta Zadražilová original songbook 
-        for the pdf literals. CURRENTLY UNFINISHED IN \optex/ V3. Creates new lines, which I dont want it to.
+        for the pdf literals. However, this is CURRENTLY UNFINISHED IN \optex/ V3. Creates repetion marks on new lines, which I dont want it to :d
     \_cod
 
     
