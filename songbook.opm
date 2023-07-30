@@ -34,6 +34,7 @@
         \`\booktitle``{text}` saves songbook title. This is the only mandatory parameter. Similarly you can specify following: 
         \`\booksubtitle``{text}`, \`\bookauthor``{text}`, \`\bookversion``{text}` and \`\bookdate``{text}`. This part is mostly copied from \ulink[https://github.com/BasileosFelices/optex-scenar]{\optex/ scenar package.}
         Additional `\_sdef{_mt:author:??}` can be specified for more language support. Usage is determing by `\??lang` \optex/ macro.
+        In two page mode an additional empty page is inserted.
     \_cod
 
 \_eoldef\.booktitle#1{ \_def\.savedtitle{#1} }
@@ -81,6 +82,7 @@
             \_fi
     }
     \_vfill\_break
+    \_ifnum\.twopagemodesreg > 0 \_topglue10pt\_vfill\_break \_fi
     \_footline={\_hss\_tenrm\_folio\_hss}
 }
 
@@ -90,11 +92,13 @@
         \`\contentpage` prints new page with songbook content. \OpTeX `\maketoc` is utilized here but displayed 
         in two columns.
         Page header is language dependent and can be easily edited or new languge definition might be added.
+        See \~`\twopagemode` for more about twopage mode. Here we call it the \~`\.twopagecheck` as we need to potentially move the song to an odd page.
     \_cod
 
 \_def\.contentpage{
     {
         \_vfill\_break
+        \.songpagecount=2 \.twopagecheck
         \_notoc\_nonum\_insec{\_mtext{toc}}
         \_begmulti 2
             \_maketoc
@@ -113,11 +117,13 @@
         in two columns. This means all \optex/ macros for index can be used normally.
         Page header is language dependent and can be easily edited or new languge definition might be added.
         `\_pgprintA` is redefined here, `\_tocdotfill` is added here for dotted line to page number. 
+        See \~`\twopagemode` for more about twopage mode. Here we call it the \~`\.twopagecheck` as we need to potentially move the song to an odd page.
     \_cod
 
 \_def\.indexpage{
     {
         \_vfill\_break
+        \.songpagecount=2 \.twopagecheck
         \_notoc\_nonum\_insec{\_mtext{index}}
         \_begmulti 2
             \_makeindex
@@ -296,14 +302,16 @@
     \_cod
 
 \_def\.twopagecheck{%
-    \_ifnum \.twopagemode > 0
+    \_ifnum \.twopagemodesreg > 0
+        % \_wlog{TPMODE ENABLED}
         \_ifnum \.songpagecount > 1 
+            % \_wlog {SONGPAGEINDICATOR PASSED}
             \_ifodd \_pageno \_else
-                \_vfil\_break \_wlog{SONGBOOK WARNING | Two page mode inserts emergency empty page on \_the\_pageno}
+            \_wlog{SONGBOOK WARNING | Two page mode inserts emergency empty page on page number \_the\_pageno.} \_vglue10pt\_vfill\_break
             \_fi
         \_fi
     \_fi%
-    \.songpagecount=1
+    \.songpagecount=1\_relax
 }
 
     \_doc
