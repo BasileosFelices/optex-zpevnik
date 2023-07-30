@@ -13,6 +13,13 @@ Tato práce vznikla v rámci předmětu BI-TEX na FIT ČVUT. Jejím obsahem jsou
     * drawchord/{NASTROJ}DICT.tex - Slovník hmatů pro uvedený nástroj.
 * zpevnik.pdf - příklad vygenerovaného zpěvníku
 
+## Dokumentace
+
+``` bash 
+#!bash
+optex -jobname songbook-doc '\docgen songbook'
+```
+
 ## Použití maker ##
 
 ### Sazba zpěvníku ###

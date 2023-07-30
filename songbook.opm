@@ -2,12 +2,12 @@
 % songbook.opm, Filip Spelina, 2023
 % Available at https://github.com/BasileosFelices/optex-zpevnik
 
-\_def\_songbook_version{0.3, 2023-07-06}
+\_def\_songbook_version{0.4, 2023-07-30}
 \_codedecl \_songbook_chord {Modular songbook formatter <\_songbook_version>}
 \_namespace{songbook}
 
     \_doc
-        \`\beginsongbook` sets the document format using \optex/ macros with some default setinngs. A4 page with 2.5cm margins. Sans latin modern font. 
+        \`\beginsongbook` sets the document format using \OpTeX/ macros with some default setinngs. A4 page with 2.5cm margins. Sans latin modern font. 
         Can be overriden after using. `\enlang` for both english hyphenation and included texts.  
     \_cod
 
@@ -32,8 +32,8 @@
         \`\titlepage` prints an title page with before specified parameters.
         The behaviour of using \~`\titlepage` may be strange if page format is changed. However, spaces should be relative, A5 is still alright. 
         \`\booktitle``{text}` saves songbook title. This is the only mandatory parameter. Similarly you can specify following: 
-        \`\booksubtitle``{text}`, \`\bookauthor``{text}`, \`\bookversion``{text}` and \`\bookdate``{text}`. This part is mostly copied from \ulink[https://github.com/BasileosFelices/optex-scenar]{\optex/ scenar package.}
-        Additional `\_sdef{_mt:author:??}` can be specified for more language support. Usage is determing by `\??lang` \optex/ macro.
+        \`\booksubtitle``{text}`, \`\bookauthor``{text}`, \`\bookversion``{text}` and \`\bookdate``{text}`. This part is mostly copied from \ulink[https://github.com/BasileosFelices/optex-scenar]{\OpTeX/ scenar package.}
+        Additional `\_sdef{_mt:author:??}` can be specified for more language support. Usage is determing by `\??lang` \OpTeX/ macro.
         In two page mode an additional empty page is inserted.
     \_cod
 
@@ -114,7 +114,7 @@
 
     \_doc   
         \`\indexpage` prints new page with song index. Songs are sorted in alphabetical order. \OpTeX `\makeindex` is utilized here but displayed 
-        in two columns. This means all \optex/ macros for index can be used normally.
+        in two columns. This means all \OpTeX/ macros for index can be used normally.
         Page header is language dependent and can be easily edited or new languge definition might be added.
         `\_pgprintA` is redefined here, `\_tocdotfill` is added here for dotted line to page number. 
         See \~`\twopagemode` for more about twopage mode. Here we call it the \~`\.twopagecheck` as we need to potentially move the song to an odd page.
@@ -144,6 +144,7 @@
         Mandatory \`\song``-song name till end of line-` does not only print a song title but also setups everything for
         song writing. Starts new page. Verse count is set to 1. Song title is added to both ToC and index (with song number).
         A song mode where every end of line is treated as `\par` is also started. 
+        \`\.verscnt` is defined register for holding current verse number. \~`\song` resets this counter to 1.
         See \~`\twopagemode` for more about twopage mode. Here we call it the \~`\.twopagecheck` as we need to potentially move the song to an odd page.
     \_cod
 
@@ -258,7 +259,7 @@
 \_nspublic \verse ;
 
     \_doc
-        \`\chord` (or \`\ch`, an alias) used to print chord mark.  
+        \`\chord` (or \`\ch`, an alias) used to print chord mark. \`\.chordfont` is defined as paragraph text scaled down to 80 \% boldified.
     \_cod
 
 \_def\.chordfont{\_typoscale[800/800]\_bf}
@@ -298,7 +299,7 @@
 
     \_doc
         \`\.twopagecheck` inserts an additional empty page and prints a warning to log file if the twopage mode is enabled, the song indicates its longer than a page and is not already correctly positioned.
-        The correct positioning is on an odd page. Resets song page indicator \~`\.songpagescount`.
+        The correct positioning is on an odd page. Resets song page indicator \~`\.songpagecount`.
     \_cod
 
 \_def\.twopagecheck{%
@@ -316,7 +317,7 @@
 
     \_doc
         This part defines \`\repetition` macros. Credit goes to Markéta Zadražilová original songbook 
-        for the pdf literals. However, this is CURRENTLY UNFINISHED IN \optex/ V3. Creates repetion marks on new lines, which I dont want it to :d
+        for the pdf literals. However, this is CURRENTLY UNFINISHED IN \OpTeX/ V3. Creates repetion marks on new lines, which I dont want it to :d
     \_cod
 
 \_def\.repetitionl{\.drawl}
@@ -366,25 +367,37 @@ Q}}
 \_endnamespace
 \_endcode
 
+\sec About `songbook` package
+
+\sec Possible improvements
+
+\begitems
+* Automatic recognition of twopage songs
+* Print verse with given number
+* Drawchord reimplementation
+* `\repetition` reimplementation
+* `\song` should act as `\songend` if neccesary. Could be simple boolean flag and if.
+\enditems
+
 \_doc
-    % \load [doc,songbook]
+    \load [doc,songbook]
 
-    % \tit Modular songbook formatter\fnotemark1
-    % \fnotetext{Available at \url{https://github.com/BasileosFelices/optex-zpevnik}}
-    % \hfill Version: \_zpevnik_version \par
-    % \centerline{semestrální práce BI-\TeX/ LS 2022/2023}
-    % \centerline{\it Filip Špelina, 2023}
+    \tit Modular songbook formatter\fnotemark1
+    \fnotetext{Available at \url{https://github.com/BasileosFelices/optex-zpevnik}}
+    \hfill Version: \_songbook_version \par
+    \centerline{v3-\OpTeX/}
+    \centerline{\it Filip Špelina, 2023}
 
-    % \notoc\nonum\sec Table of contents
-    % \maketoc
-    % \printdoctail scenar.opm % prints the documantation written after \_endcode
-    % \sec[impl] Implementation
-    % \printdoc scenar.opm % print code + local documentation
-    % \sec Index
-    % \begmulti 3
-    %     \tt \makeindex     
-    % \endmulti
-    % \bye
+    \notoc\nonum\sec Table of contents
+    \maketoc
+    \printdoctail songbook.opm % prints the documantation written after \_endcode
+    \sec[impl] Technical implementation
+    \printdoc songbook.opm % print code + local documentation
+    \sec Macro index
+    \begmulti 2
+        \tt \makeindex     
+    \endmulti
+    \bye
 \_cod
 
 \endinput
