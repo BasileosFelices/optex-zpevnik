@@ -22,7 +22,6 @@
 
 \_nspublic \beginsongbook ;
 
-
     \_doc
         Helper internal \`\.newpage` starts a new page.
     \_cod
@@ -304,7 +303,7 @@
             \_fi
         \_fi
     \_fi%
-    \.songpagescount=1
+    \.songpagecount=1
 }
 
     \_doc
@@ -312,7 +311,6 @@
         for the pdf literals. However, this is CURRENTLY UNFINISHED IN \optex/ V3. Creates repetion marks on new lines, which I dont want it to :d
     \_cod
 
-    
 \_def\.repetitionl{\.drawl}
 \_def\.repetitionr#1{\.drawr\if$#1$ {} \else{\_bi\_hskip 0.5em#1x}\fi}
 \_def\.repl{\.repetitionl}
@@ -320,9 +318,9 @@
 
 % disabled because its unfinished
 % \_nspublic \repetitionl \repetitionr \repl \repr ;
-// \_catcode`\|=13
-// {\_catcode`\^^M=13
-// \gdef|:#1:|#2^^M{\_noindent\drawl{\_bi #1}\drawr\if:#2: {} \else {\_bi \_hskip 0.5em  #2x} \fi}}
+% \_catcode`\|=13
+% {\_catcode`\^^M=13
+% \gdef|:#1:|#2^^M{\_noindent\drawl{\_bi #1}\drawr\if:#2: {} \else {\_bi \_hskip 0.5em  #2x} \fi}}
 
 \_def\.lrepsign{\_pdfliteral{q
 .5 w
