@@ -14,9 +14,9 @@
 \_def\.beginsongbook{
     \_margins/1 a4 (2.5,2.5,2.5,2.5)cm  % okraje 2.5 cm, strana A4
     \_cslang
-    \_fontfam[lm] 
-    \sans\_rm
-    \_typosize[11/14]
+    \_fontfam[lm] % Font Latin Modern 
+    \sans\_rm % Sans variant of Latin Modern
+    \_typosize[11/14] % letter size / line spacing
     \_parindent=0pt
 }
 
@@ -371,14 +371,39 @@ Q}}
 
 \sec About `songbook.opm` package
 
+The Songbook package is an \OpTeX/ macro package designed to facilitate songbook formatting.
+With this package, you can easily typeset lyrics with chords and other markup in a consistent and professional manner
+as is commonly known with \TeX .
+
+\secc V1, V2, V3? What's the difference?
+
+This work has been inspired and built upon an V1 songbook package written by Markéta Zadražilová \fnote{Available at \url{https://bitbucket.org/marketa_zadrazilova/tex/src/master/}}.
+As I understand it, Radek Smid then extended this package in V2 and implemented the `\drawchord` macros. They kindly published their work under GNU GPLv3 licence allowing me 
+to utilize their code.
+
+In the third version of the Songbook package, I ported the work to an \OpTeX/ engine. However, V3 is a complete rewrite of the code.Even behaviour of
+some macros has been changed. This means that V3 {\bf it not backwards compatible} with previous versions without rather significant modification. Benefits
+
+\sec Getting started
+
+To start using the Songbook package in your TeX document, simply include the package in your preamble. (You need `songbook.opm` file in your working directory)
+
+\ttline=0
+\begtt
+    \load[songbook]
+\endtt
+
+
+
 \sec Possible improvements
 
-\begitems
+\begitems\style o
 * Automatic recognition of twopage songs
 * Print verse with given number
 * Drawchord reimplementation
 * `\repetition` reimplementation
 * `\song` should act as `\songend` if neccesary. Could be simple boolean flag and if.
+* Automatic chord transpozition options
 \enditems
 
 \_doc
