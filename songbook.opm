@@ -308,7 +308,9 @@
         \_ifnum \.songpagecount > 1 
             % \_wlog {SONGPAGEINDICATOR PASSED}
             \_ifodd \_pageno \_else
-            \_wlog{SONGBOOK WARNING | Two page mode inserts emergency empty page on page number \_the\_pageno.} \_vglue10pt\_vfill\_break
+                \_wlog{SONGBOOK WARNING | Two page mode inserts emergency empty page 
+                on page number \_the\_pageno.}%
+                \_vglue10pt\_vfill\_break
             \_fi
         \_fi
     \_fi%
@@ -367,7 +369,7 @@ Q}}
 \_endnamespace
 \_endcode
 
-\sec About `songbook` package
+\sec About `songbook.opm` package
 
 \sec Possible improvements
 
