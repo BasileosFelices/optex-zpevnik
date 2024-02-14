@@ -2,7 +2,7 @@
 % songbook.opm, Filip Spelina, 2023
 % Available at https://github.com/BasileosFelices/optex-zpevnik
 
-\_def\_songbook_version{0.4, 2023-07-30}
+\_def\_songbook_version{0.5.0, 2023-07-30}
 \_codedecl \_songbook_chord {Modular songbook formatter <\_songbook_version>}
 \_namespace{songbook}
 
@@ -259,19 +259,19 @@
 \_nspublic \verse ;
 
     \_doc
-        \`\chord` (or \`\ch`, an alias) used to print chord mark. \`\.chordfont` is defined as paragraph text scaled down to 80 \% boldified.
+        \`\chord` (or \`\ch`, an alias) used to print chord mark. \`\chordfont` is defined as paragraph text scaled down to 80 \% boldified.
     \_cod
 
 \_def\.chordfont{\_typoscale[800/800]\_bf}
 
 \_def\.chord#1{%
     \_noindent\_raise \_the\_optsize \_hbox to 0pt{{\.chordfont #1}\_hss%
-        \_noindent\_raise 4mm \_hbox to 1pt{\_hfil}%
+        \_noindent\_raise \_the\_optsize \_hbox to 1pt{\_hfil}%
         }%
 }
 \_def\.ch#1{\.chord{#1}}
 
-\_nspublic \chord \ch;
+\_nspublic \chord \ch \chordfont;
     
     \_doc
         Here we prepare the documenent for optional twopage mode. \`\.twopagemodesreg` acts like a boolean for enabling the whole functionality in the first place. Holding 0 we mean false and do not enforce the page separation. Holding more than 0, we mean true and enable two page mode.
